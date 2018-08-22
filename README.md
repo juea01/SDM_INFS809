@@ -1,2 +1,2 @@
 # SDM_INFS809
-Please update this file by all team members for testing.
+Please add your initial to this file just for testing purpose.
