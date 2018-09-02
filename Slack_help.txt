@@ -5,6 +5,9 @@
 2. 
 3. Linux docker: 
 
+$ npm install express
+npm install request --save
+
 wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
 uzip grok-stable-linux-amd64.zip
 cd /usr/bin
