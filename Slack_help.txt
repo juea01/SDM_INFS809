@@ -1,2 +1,15 @@
 2 Sep: created by Henry
 1. Slack API app: https://api.slack.com/apps/ACK9JCF0E
+   Client ID: 417145055956.427324423014
+
+2. 
+3. Linux docker: 
+
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+uzip grok-stable-linux-amd64.zip
+cd /usr/bin
+cp /usr/ngrok ngrok
+./ngrok http 8000
+Web Interface                 http://127.0.0.1:4040                                                                     
+Forwarding                    http://4d337af4.ngrok.io -> localhost:8000                                                
+Forwarding                    https://4d337af4.ngrok.io -> localhost:8000 
