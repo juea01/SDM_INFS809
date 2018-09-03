@@ -13,10 +13,10 @@ uzip grok-stable-linux-amd64.zip
 cd /usr/bin
 cp /usr/ngrok ngrok
 ./ngrok http 8000
-Session Status                online                                                                                        
-Session Expires               7 hours, 58 minutes                                                                           
-Version                       2.2.8                                                                                         
-Region                        United States (us)                                                                            
-Web Interface                 http://127.0.0.1:4040                                                                         
-Forwarding                    http://607e3ca7.ngrok.io -> localhost:8000                                                    
-Forwarding                    https://607e3ca7.ngrok.io -> localhost:8000
+Session Status                online                                                                                                
+Account                       Phuc Pham Hong (Plan: Free)                                                                           
+Version                       2.2.8                                                                                                 
+Region                        United States (us)                                                                                    
+Web Interface                 http://127.0.0.1:4041                                                                                 
+Forwarding                    http://3a057f5b.ngrok.io -> localhost:8000                                                            
+Forwarding                    https://3a057f5b.ngrok.io -> localhost:8000  
