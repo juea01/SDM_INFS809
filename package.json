@@ -1,0 +1,26 @@
+{
+  "name": "sdm_infs809",
+  "version": "1.0.0",
+  "description": "Test sample",
+  "main": "index.js",
+  "scripts": {
+    "test": "Mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juea01/SDM_INFS809.git"
+  },
+  "keywords": [
+    "Mocha",
+    "testing"
+  ],
+  "author": "yjx5980",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juea01/SDM_INFS809/issues"
+  },
+  "homepage": "https://github.com/juea01/SDM_INFS809#readme",
+  "dependencies": {
+    "mocha": "^5.2.0"
+  }
+}
