@@ -1,27 +1,49 @@
 {
+<<<<<<< HEAD
+  "name": "appg08",
+  "version": "1.0.0",
+  "description": "Please add your initial to this file just for testing purpose. Ar Phuc: 2 Sep: Pls clone from Develop branch that I've created on 2 Sep. Do not push back Master branch Tony",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+=======
   "name": "sdm_infs809",
   "version": "1.0.0",
   "description": "Test sample",
   "main": "index.js",
   "scripts": {
     "test": "Mocha"
+>>>>>>> master
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/juea01/SDM_INFS809.git"
   },
+<<<<<<< HEAD
+  "author": "",
+=======
   "keywords": [
     "Mocha",
     "testing"
   ],
   "author": "yjx5980",
+>>>>>>> master
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/juea01/SDM_INFS809/issues"
   },
+<<<<<<< HEAD
+  "homepage": "https://github.com/juea01/SDM_INFS809#readme"
+=======
   "homepage": "https://github.com/juea01/SDM_INFS809#readme",
   "dependencies": {
     "chai": "^4.1.2",
     "mocha": "^5.2.0"
   }
+>>>>>>> master
 }
