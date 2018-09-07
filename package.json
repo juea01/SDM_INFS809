@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/juea01/SDM_INFS809#readme",
   "dependencies": {
+    "chai": "^4.1.2",
     "mocha": "^5.2.0"
   }
 }
