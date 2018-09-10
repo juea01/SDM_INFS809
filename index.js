@@ -103,7 +103,7 @@ app.post('/command', urlencodedParser, function(req, res) {
     else {    
         res.send('Welcome to Monitor slack bot of Group 08 !');
         var message = {
-            "text": "Hey,would you like to share something now ?",
+            "text": "Hey, would you like to share something now ?",
             "attachments": [
                 {
                     "text": "You can choose one option to go next",
@@ -224,17 +224,6 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     
     // Helper functions
 
-function findAttachment(message, actionCallbackId) {
-    return message.attachments.find(a => a.callback_id === actionCallbackId);
-  }
-  
-  function acknowledgeActionFromMessage(originalMessage, actionCallbackId, ackText) {
-    const message = cloneDeep(originalMessage);
-    const attachment = findAttachment(message, actionCallbackId);
-    delete attachment.actions;
-    attachment.text = `:white_check_mark: ${ackText}`;
-    return message;
-  }
 
         
     if ( actionJSONPayload.actions[0].value == "Happy")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
