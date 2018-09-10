@@ -1,0 +1,75 @@
+Docker:
+
+Dockerfile: 
+From ubuntu: 16.04    /from centos: 8
+
+
+
+Build docker from Dockerfile
+Docker build -t <image_name>
+
+Build container from image:
+Docker run -v <folder_in_computer>:<folder_in_container> -p <port_in_computer>:<port_in_container> -it <image_name>  /bin/bash
+v: mount volume, du lieu tu thu mur may that co the truy cap tu may ao.
+P: Cong mạng máy thật dẫn đến cổng mạng máy áo đang chạy
+-it: Mở terminal bằng /bin/bash
+Example: docker run -v ~/Docker/webroot:/var/www/html -p 9000:80 -it nginx /bin/bash
+
+
+Check:
+Docker verion
+Docker ps: List all running container
+Docker ps -l
+Docker ps -a: List all stoped container
+Docker images
+Search:
+Docker search ubuntu
+
+
+Keep update of images:
+Cac thay doi tren container muon luu lai:
+Docker commit  “ContainerID” “Image”
+Docker commit 31d2ff4d070d centos
+Delete images:
+Docker rmi {image_id/name}
+Delete container:
+Docker rm -f {container_id/name}
+-	
+Pull:
+Docker pull {image_name}: Tu search tren Docker Hub
+
+
+	-Share for other: Push
+	- docker push my_username/my_first_image
+
+RUN:
+
+Docker start {new_container_name}: Start a container
+Access in to one running container: 
+docker exec -it {new_container_name} /bin/bash
+VD: docker exec -it 31d2ff4d070d  /bin/bash
+./ngrok http 8000
+docker exec -it containerName/caintainerId bash
+Docker run centos (run image_name)
+Docker run —name {container_name} -p {host_port}:{costainer+port} -v {/hot_ptaht}:{/container_ptaht} -it {image_name} /bin/bash
+mkdir -p /usr/src/appg08
+docker run -it -p 127.0.0.1:8000:8000 -v /volumes/Matrix/learning/NodeJS/SDM_INFS809:/usr/src/appg08 node /bin/bash
+Connect to terminal of virtual docker:
+See parameter: Docker ps -a -> Get “/bin/bash”
+Mapping terminal: Docker run -i -t centos /bin/bash
+i: To access terminal
+-t : To show your result of command
+https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+
+STOP:
+Docker stop [container ID]
+Delete container: docker rm [containerID]
+
+
+Exit but still run:
+Detach: Ctrl + P, then Ctrl + Q
+Escape container: Exit
+Vao lai: (Attach): docker attach Name_ID
+Docker compose:
+Run multi container at the same time, don’t need to manage each container.
+https://docs.docker.com/compose/
