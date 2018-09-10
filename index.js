@@ -8,7 +8,10 @@ var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 
-
+//10 September
+const axios = require('axios');
+//const qs = require('qs');
+const apiUrl = 'https://slack.com/api';
 
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
@@ -86,7 +89,7 @@ function sendMessageToSlackResponseURL(responseURL,JSONmessage){
 
 // Route the endpoint that our slash command will point to and send back a simple response to mbot command
 app.post('/command', urlencodedParser, function(req, res) {
-    res.send('Welcome to Monitor slack bot of Group 08 !');
+   
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     var responseURL = reqBody.response_url;
@@ -98,6 +101,7 @@ app.post('/command', urlencodedParser, function(req, res) {
     
     }
     else {    
+        res.send('Welcome to Monitor slack bot of Group 08 !');
         var message = {
             "text": "Hey,would you like to share something now ?",
             "attachments": [
@@ -155,7 +159,8 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     }
 
     if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
-        {
+        
+    {
 
          var reqBody = req.body;
          var responseURL = reqBody.response_url;
@@ -214,10 +219,25 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             
            }
          sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
-        };
+    };
+       
+    
+    // Helper functions
+
+function findAttachment(message, actionCallbackId) {
+    return message.attachments.find(a => a.callback_id === actionCallbackId);
+  }
+  
+  function acknowledgeActionFromMessage(originalMessage, actionCallbackId, ackText) {
+    const message = cloneDeep(originalMessage);
+    const attachment = findAttachment(message, actionCallbackId);
+    delete attachment.actions;
+    attachment.text = `:white_check_mark: ${ackText}`;
+    return message;
+  }
+
         
-        
-     if ( actionJSONPayload.actions[0].value == "Happy")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
+    if ( actionJSONPayload.actions[0].value == "Happy")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
             {
     
              var reqBody = req.body;
@@ -237,9 +257,46 @@ app.post('/actions', urlencodedParser, (req, res) =>{
              ]       
                 
                }
-             sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+            sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);
+             
+/*
+
+             const send = (data) => { 
+                axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(data))
+                .then((result => {
+                  console.log(result.data);
+                }))
+                .catch((err) => {
+                  console.log(err);
+                });
+              };
+
+              const postInitMessage = (userId) => {
+                let messageData = {
+                  token: process.env.SLACK_ACCESS_TOKEN,
+                  channel: userId,
+                  text: ':wave: Hello! I\'m here to help your team make approved announcements into a channel.',
+                  attachments: JSON.stringify([
+                    {
+                      text: 'Do you have something to announce?',
+                      callback_id: 'startAnnouncement',
+                      actions: [
+                        {
+                          name: 'start',
+                          text: 'Make announcement',
+                          type: 'button',
+                          value: 'startAnnouncement',
+                        }
+                      ]
+                    }
+                  ])
+                };
+                send(messageData);
+              };
+              */
+
             }     
-            
+        
 
 
 
