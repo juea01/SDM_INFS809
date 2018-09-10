@@ -9,9 +9,9 @@ var request = require('request');
 var bodyParser = require('body-parser');
 
 //10 September
-const axios = require('axios');
+//const axios = require('axios');
 //const qs = require('qs');
-const apiUrl = 'https://slack.com/api';
+//const apiUrl = 'https://slack.com/api';
 
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
@@ -87,6 +87,52 @@ function sendMessageToSlackResponseURL(responseURL,JSONmessage){
 }
 
 
+//10 September: Henry Add function to chat.postMessage
+function chatPostMessage(responseURL,JSONmessage){
+
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/chat.postMessage',
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        token: process.env.SLACK_ACCESS_TOKEN, //xoxp-413354812451-413568494785-431703154241-816130ae122b2eea262b59d64cf3a878
+        channel: 'CC5EE9EJW',
+        json: JSONmessage
+    }
+
+    request(postOptions, (error,response,body)=>{
+        if (error){
+            //handle errors as you see fit
+        }
+    })
+}
+
+//10 September: Henry Add function to Update Message
+function chatUpdateMessage(responseURL, Timestamp, JSONmessage){
+
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/chat.update',
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        token: process.env.SLACK_ACCESS_TOKEN, //xoxp-413354812451-413568494785-431703154241-816130ae122b2eea262b59d64cf3a878
+        channel: 'CC5EE9EJW',
+        ts: Timestamp,
+        json: JSONmessage
+    }
+
+    request(postOptions, (error,response,body)=>{
+        if (error){
+            //handle errors as you see fit
+        }
+    })
+}
+
+
 // Route the endpoint that our slash command will point to and send back a simple response to mbot command
 app.post('/command', urlencodedParser, function(req, res) {
    
@@ -103,7 +149,7 @@ app.post('/command', urlencodedParser, function(req, res) {
     else {    
         res.send('Welcome to Monitor slack bot of Group 08 !');
         var message = {
-            "text": "Hey,would you like to share something now ?",
+            "text": "Hey, would you like to share something now ?",
             "attachments": [
                 {
                     "text": "You can choose one option to go next",
@@ -224,24 +270,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     
     // Helper functions
 
-function findAttachment(message, actionCallbackId) {
-    return message.attachments.find(a => a.callback_id === actionCallbackId);
-  }
-  
-  function acknowledgeActionFromMessage(originalMessage, actionCallbackId, ackText) {
-    const message = cloneDeep(originalMessage);
-    const attachment = findAttachment(message, actionCallbackId);
-    delete attachment.actions;
-    attachment.text = `:white_check_mark: ${ackText}`;
-    return message;
-  }
 
         
     if ( actionJSONPayload.actions[0].value == "Happy")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
             {
     
              var reqBody = req.body;
-             var responseURL = reqBody.response_url;
+             var ts = reqBody.ts;
         
              message = {
             "text": "How are you happy with work ?",
@@ -257,7 +292,8 @@ function findAttachment(message, actionCallbackId) {
              ]       
                 
                }
-            sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);
+            chatUpdateMessage(responseURL, ts, message);
+            //sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);
              
 /*
 
