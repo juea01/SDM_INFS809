@@ -4,7 +4,6 @@
 branches:
  only:
     - development
-    - master
 install:
  - npm install phantomjs -g
  - npm install -g mocha-phantomjs
