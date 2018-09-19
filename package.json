@@ -19,10 +19,6 @@
 	},
 	"scripts": {
 		"test": "make test",
-		"name": "sdm_infs809",
-		"version": "1.0.0",
-		"description": "Test sample",
-		"main": "index.js"
 	},
 	"licenses": [
 		{
