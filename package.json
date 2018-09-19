@@ -25,6 +25,11 @@
 		"scripts": {
 			"test": "make test"
 		},
+		"licenses": [
+    {
+      "type": "MIT"
+    }
+	  ],
 		"repository": {
 			"type": "git",
 			"url": "git+https://github.com/juea01/SDM_INFS809.git"
