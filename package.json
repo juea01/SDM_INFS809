@@ -12,7 +12,7 @@
 		"gulp-plumber":"^0.6.1",
 		"gulp-jade":"^0.5.0",
 		"gulp-watch":"^0.6.5",
-		"gulp-connect":"^2.0.5",
+		"gulp-connect":"^2.0.5"
 	},
 	"devDependencies": {},
 	"scripts": {
@@ -33,6 +33,5 @@
 		"bugs": {
 			"url": "https://github.com/juea01/SDM_INFS809/issues"
 		},
-		"homepage": "https://github.com/juea01/SDM_INFS809#readme",
 	}
 }
