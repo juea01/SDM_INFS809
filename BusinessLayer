@@ -4,7 +4,7 @@ var url = "mongodb://localhost:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness45";
-var data = {name: "Thomas Junior2", team: "DevTeam3", date: "12July2018", rating: "happy"};
+var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
 
 //insert data into db
 DbLayer.insertData(url,dbName,collectionName,data);
