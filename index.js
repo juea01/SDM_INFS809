@@ -15,8 +15,8 @@ var bodyParser = require('body-parser');
 
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
-var clientId = '413354812451.427533931460';
-var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
+var clientId = '413354812451.438134630340';
+var clientSecret = '77790b7b7989d74840852d8f44684e81';
 
 // Instantiates Express and assigns our app variable to it
 var app = express();
@@ -147,7 +147,8 @@ app.post('/command', urlencodedParser, function(req, res) {
     
     }
     else {    
-        res.send('Welcome to Monitor slack bot of Group 08 !');
+        //res.send('Welcome to Monitor slack bot of Group 08 !');
+        console.log("Welcome to chat chat");
         var message = {
             "text": "Hey, would you like to share something now ?",
             "attachments": [
