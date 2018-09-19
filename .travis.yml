@@ -11,11 +11,11 @@ install:
   - npm install -g bower
   - npm install -g mocha 
   - bower install
+  - npm install
 before_script:
  - phantomjs --version
  - mocha-phantomjs --version
  - gulp &
  - sleep 5 # give gulp background task some time to execute.
 script:
- - mocha-phantomjs out/test/index.html
  - make test
