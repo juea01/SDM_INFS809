@@ -1,7 +1,6 @@
 var gulp = require('gulp'),
   plumber = require('gulp-plumber'),
   watch = require('gulp-watch'),
-  jade = require('gulp-jade'),
   connect = require('gulp-connect');
 gulp.task('serve', function(event) {
   connect.server({
@@ -20,16 +19,4 @@ gulp.task('js:publish', function(event) {
 gulp.task('js:watch', function(event) {
   watch({glob: "src/js/**/*.js"}, ["js:publish"]);
 });
-gulp.task('jade:compile', function(event) {
-  return gulp.src("src/jade/**/*.jade")
-    .pipe(plumber())
-    .pipe(jade({
-      pretty: true
-    }))
-    .pipe(gulp.dest("out/"));
-});
-gulp.task('jade:watch', function(event) {
-  watch({glob: "src/jade/**/*.jade"}, ['jade:compile']);
-});
-gulp.task('dev', ['serve', 'jade:watch', 'js:watch']);
 gulp.task('default', ['dev']);
