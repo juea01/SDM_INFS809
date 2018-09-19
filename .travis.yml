@@ -3,7 +3,7 @@
  - "0.10"
 branches:
  only:
-   - development
+    - development
     - master
 install:
  - npm install phantomjs -g
