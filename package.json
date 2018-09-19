@@ -10,31 +10,30 @@
 		"request": "^2.88.0"
 	},
 	"devDependencies": {
-		"mocha":"^1.18.2",
-		"gulp":"^3.6.1",
-		"gulp-plumber":"^0.6.1",
-		"gulp-jade":"^0.5.0",
-		"gulp-watch":"^0.6.5",
-		"gulp-connect":"^2.0.5"
+		"mocha": "^1.18.2",
+		"gulp": "^3.6.1",
+		"gulp-plumber": "^0.6.1",
+		"gulp-jade": "^0.5.0",
+		"gulp-watch": "^0.6.5",
+		"gulp-connect": "^2.0.5"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "make test",
 		"name": "sdm_infs809",
 		"version": "1.0.0",
 		"description": "Test sample",
-		"main": "index.js",
-		"test": "make test"
-		},
-		"licenses": [
-    {
-      "type": "MIT"
-    }
-	  ],
-		"repository": {
-			"type": "git",
-			"url": "git+https://github.com/juea01/SDM_INFS809.git"
-				      },
-		"bugs": {
-			"url": "https://github.com/juea01/SDM_INFS809/issues"
-				}
+		"main": "index.js"
+	},
+	"licenses": [
+		{
+			"type": "MIT"
+		}
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/juea01/SDM_INFS809.git"
+	},
+	"bugs": {
+		"url": "https://github.com/juea01/SDM_INFS809/issues"
+	}
 }
