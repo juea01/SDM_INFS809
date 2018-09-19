@@ -1,5 +1,5 @@
 {
-    "name": "testPlayground",
+    "name": "SMD_INF809",
     "version": "0.0.1",
     "dependencies": {
         "mocha": "latest",
