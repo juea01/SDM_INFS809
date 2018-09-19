@@ -1,16 +1,16 @@
 {
-  "name": "test",
+  "name": "SDM_INFS809",
   "description": "a repo for getting set up with testing using mocha!",
   "version": "0.0.1",
   "main": "index.js",
-  "homepage": "https://github.com/TonyTriVo/test",
+  "homepage": "https://github.com/juea01/SDM_INFS809",
   "author": "yjx5980@aut.ac.nz",
   "repository": {
     "type": "git",
     "url": "git@github.com:jh3y/test.git"
   },
   "bugs": {
-    "url": "https://github.com/TonyTriVo/test/issues"
+    "url": "https://github.com/juea01/SDM_INFS809/issues"
   },
   "scripts": {
     "test": "make test"
@@ -21,6 +21,7 @@
     }
   ],
   "devDependencies": {
+	"mocha": "^1.18.2",
     "gulp": "^3.6.1",
     "gulp-connect": "^2.0.5",
     "gulp-jade": "^0.5.0",
