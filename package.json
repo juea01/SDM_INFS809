@@ -28,10 +28,6 @@
 			"type": "git",
 			"url": "git+https://github.com/juea01/SDM_INFS809.git"
 		},
-		"keywords": [
-			"Mocha",
-			"testing"
-		],
 		"author": "yjx5980",
 		"license": "ISC",
 		"bugs": {
