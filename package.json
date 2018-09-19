@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "Please add your initial to this file just for testing purpose. Ar Phuc: 2 Sep: Pls clone from Develop branch that I've created on 2 Sep. Do not push back Master branch Tony",
 	"main": "index.js",
+	"author": "yjx5980",
 	"dependencies": {
 		"express": "^4.16.3",
 		"mongodb": "^3.1.4",
@@ -34,9 +35,7 @@
 			"type": "git",
 			"url": "git+https://github.com/juea01/SDM_INFS809.git"
 		},
-		"author": "yjx5980",
-		"license": "ISC",
 		"bugs": {
 			"url": "https://github.com/juea01/SDM_INFS809/issues"
-		},
+		}
 }
