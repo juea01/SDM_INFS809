@@ -14,6 +14,7 @@ install:
 before_script:
   - phantomjs --version
   - mocha-phantomjs --version
+  - chmod 0777 ./node_modules/.bin/mocha
   - gulp &
   - sleep 5 # give gulp background task some time to execute.
 script:
