@@ -8,6 +8,10 @@ var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 
+
+//import our business layer
+var BusinessLayer = require("./BusinessLayer");
+
 //10 September
 //const axios = require('axios');
 //const qs = require('qs');
@@ -275,7 +279,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         
     if ( actionJSONPayload.actions[0].value == "Happy")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
             {
-    
+        console.log("Happy button is clicked");
+        
+        //store data into Mongodb
+        var data = {name: "Sushi", team: "DevTeam3", date: "12July2018", rating: "happy"};
+        BusinessLayer.insertTeamMemberData(data);        
+        console.log("insertTeamMemberData function has been called");
+
              var reqBody = req.body;
              var ts = reqBody.ts;
         
