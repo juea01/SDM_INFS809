@@ -396,7 +396,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         
     {
          var message = {
-            "text": "Hey, would you like to share something now ?",
+           "text": "Please share about your happiness level now ?",
            "attachments": [
             {
                 "text": "Please share us how do you feel now",
@@ -404,7 +404,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
            
           }]
         }   
@@ -447,7 +447,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                         "callback_id": "wopr_survey",
                         "color": "#3AA3E3",
                         "attachment_type": "default",
-                        "actions": ActionArr('Report Individual',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','danger')
+                        "actions": ActionArr('Report Individual',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
                    
                   }]
                 }   
@@ -470,7 +470,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','primary','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','primary','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -487,7 +487,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','primary','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','primary','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -504,7 +504,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','primary','Morose',':crying_cat_face:','','COMMIT','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','primary','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -522,31 +522,55 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','primary','COMMIT','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','primary','COMMIT INDIVIDUAL','','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
-        case "COMMIT":
+        case "COMMIT INDIVIDUAL":
+        //Continue get input data about the Team
         var message = {
-            "text": "Hey, would you like to share something now ?",
+           "text": "Please tell about your Teamwork ",
            "attachments": [
             {
-                "text": "Please share us how do you feel now",
+                "text": "Please share us how do you feel now about your teamwork",
                 "fallback": "You are unable to choose this option",
-                "callback_id": "wopr_survey",
+                "callback_id": "InpputTeamwork",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','primary')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','primary')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
 
         //-----------Insert Database MongoDB here-------------//
         //Function to insert Database: value take from happinesslevel variable
+
+        //Message thank you
         break;
 
+        case "COMMIT TEAMWORK":
+        //Continue get input data about the Team
+        var message = {
+           "text": "Please tell about your Teamwork ",
+           "attachments": [
+            {
+                "text": "Please share us how do you feel now about your teamwork",
+                "fallback": "You are unable to choose this option",
+                "callback_id": "InpputTeamwork",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
+            }]
+            }   
+        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+
+        //-----------Insert Database MongoDB for Teamwork here-------------//
+        //Function to insert Database: value take from happinesslevel variable
+
+        //Message thank you
+        break;
         default:
         break;
     
