@@ -431,7 +431,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             
             var filesend ='https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx'
 
-            function UploadFile2Slack (filesend)
+            UploadFile2Slack (filesend)
              //sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         };
 
