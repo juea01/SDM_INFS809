@@ -8,6 +8,7 @@ var url = "mongodb://a8764c050115:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
+var collectionNameTeam = "team_happiness";
 //var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
 
 class BusinessLayer {
@@ -17,6 +18,13 @@ class BusinessLayer {
         console.log("Business Layer, inserting team member data:"+collectionName);
         //insert data into db
         DbLayer.insertData(url,dbName,collectionName,data);
+    
+    }
+
+     static insertTeamData (data) {
+        console.log("Business Layer, inserting team member data:"+collectionNameTeam);
+        //insert data into db
+        DbLayer.insertData(url,dbName,collectionNameTeam,data);
     
     }
 
