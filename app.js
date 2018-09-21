@@ -8,7 +8,7 @@ var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 //import our business layer
-var BusinessLayer = require(./BusinessLayer);
+var BusinessLayer = require('./BusinessLayer');
 var name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5;
 var happinesslevel;
 
