@@ -549,8 +549,9 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 
         //-----------Insert Database MongoDB here-------------//
         //Function to insert Database: value take from happinesslevel variable
-        console.log(happinesslevel);
+        
         var dt = new Date();
+        console.log(dt);
         //store data into Mongodb
         var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
         BusinessLayer.insertTeamMemberData(data);
