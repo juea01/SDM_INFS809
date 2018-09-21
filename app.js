@@ -7,8 +7,11 @@ var http = require('http');
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
+//import our business layer
+var BusinessLayer = require(./BusinessLayer);
 var name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5;
 var happinesslevel;
+
 
 
 //10 September
@@ -539,15 +542,20 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "InpputTeamwork",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','primary')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
             }]
             }   
-        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        
 
         //-----------Insert Database MongoDB here-------------//
         //Function to insert Database: value take from happinesslevel variable
-
-        //Message thank you
+        console.log(happinesslevel);
+        var dt = new Date();
+        //store data into Mongodb
+        var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
+        BusinessLayer.insertTeamMemberData(data);
+        //Change to new Input data for Teamwork
+        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
         case "COMMIT TEAMWORK":
