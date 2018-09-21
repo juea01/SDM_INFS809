@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 //import our business layer
 var BusinessLayer = require('./BusinessLayer');
 var name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5;
-var happinesslevel;
+var happinesslevel ='';
 
 
 
@@ -28,6 +28,8 @@ var tsMessage ='';
 var response_url;
 var msg;
 var bodyMesg;
+var typeTeam ='I';//Individual
+var CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
 
 // Instantiates Express and assigns our app variable to it
 var app = express();
@@ -317,7 +319,7 @@ function chatUpdateMessage2(responseURL,Timestamp,attachment){
 
 // Route the Slack command /mbot in the config slack app: Process with input happiness level part
 app.post('/mbot', urlencodedParser, function(req, res) {
-    res.send('Welcome to Monitor slack bot of Group 08 !');
+    //res.send('Welcome to Monitor slack bot of Group 08 !');
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     responseURL = reqBody.response_url;
@@ -331,7 +333,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
     else {    
         //res.send('Welcome to Monitor slack bot of Group 08 !');
         var message = {
-            "text": "Hey, would you like to share something now ?",
+            "text": "*WELCOME TO HOWISIT OF GROUP08 !*\n Would you like to share something now ?",
             "attachments": [
                 {
                     "text": "You can choose one option to go next",
@@ -394,10 +396,11 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     responseURL = bodyMesg.response_url;
     //console.log("Log gia tri Bodymesg");
     //console.log(bodyMesg);
-
+   
     if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         
-    {
+    {   
+        CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' 
          var message = {
            "text": "Please share about your happiness level now ?",
            "attachments": [
@@ -407,25 +410,15 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
            
           }]
         }   
         
-        var attachment =[
-            {
-                "text": "Please share us how do you feel now",
-                "fallback": "You are unable to choose this option",
-                "callback_id": "wopr_survey",
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','Smiley',':kissing_cat:','','Boring',':smirk_cat:','','Morose',':crying_cat_face:','')
-           
-          }]
         
         //chatPostMessage(actionJSONPayload.response_url, attachment);
        
-         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
     };
       
     //20 September: Process for report select menu part
@@ -450,7 +443,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                         "callback_id": "wopr_survey",
                         "color": "#3AA3E3",
                         "attachment_type": "default",
-                        "actions": ActionArr('Report Individual',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
+                        "actions": ActionArr('Report Individual',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
                    
                   }]
                 }   
@@ -473,7 +466,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','primary','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','primary','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -490,7 +483,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','primary','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','primary','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -507,7 +500,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','primary','Morose',':crying_cat_face:','','COMMIT INDIVIDUAL','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','primary','Morose',':crying_cat_face:','',CommitBtn,'','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
@@ -525,58 +518,110 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','primary','COMMIT INDIVIDUAL','','danger')
+                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','primary',CommitBtn,'','danger')
             }]
             }   
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
         case "COMMIT INDIVIDUAL":
-        //Continue get input data about the Team
-        var message = {
-           "text": "Please tell about your Teamwork ",
-           "attachments": [
-            {
-                "text": "Please share us how do you feel now about your teamwork",
-                "fallback": "You are unable to choose this option",
-                "callback_id": "InpputTeamwork",
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
-            }]
-            }   
+        if (happinesslevel =='') {
+            var message = {
+                "text": "*Please CHOOSE THE HAPPINES LEVEL FIRST !*",
+                "attachments": [
+                    {
+                        "text": "Please share us how do you feel now about your teamwork",
+                        "fallback": "You are unable to choose this option",
+                        "callback_id": "InpputTeamwork",
+                        "color": "#3AA3E3",
+                        "attachment_type": "default",
+                        "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','primary')
+                    }]
+                    }   
+                sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        }
+        else
+        {
+            //-----------Insert Database MongoDB here-------------//
+            //Function to insert Database: value take from happinesslevel variable
+            
+            var dt = new Date();
+            //console.log(dt);
+            //store data into Mongodb
+            var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
+            //BusinessLayer.insertTeamMemberData(data);
+            console.log('Inserted Individual Happiness Level Data to MongoDB');
+            typeTeam ='T'; //Switch TypeTeam from Individual to Team
+            //Continue get input data about the Team
+            //Change to new Input data for Teamwork
+            CommitBtn = 'COMMIT TEAMWORK';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
+            happinesslevel = '';//Reset value to '';
+            var message = {
+            "text": "_*Thank you so much for your feedback about yourself*_ \n *Please share more about your Teamwork !*",
+            "attachments": [
+                {
+                    "text": "Please share us how do you feel now about your teamwork",
+                    "fallback": "You are unable to choose this option",
+                    "callback_id": "InpputTeamwork",
+                    "color": "#3AA3E3",
+                    "attachment_type": "default",
+                    "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','primary')
+                }]
+                }   
+            sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        }
         
-
-        //-----------Insert Database MongoDB here-------------//
-        //Function to insert Database: value take from happinesslevel variable
-        console.log(happinesslevel);
-        var dt = new Date();
-        //store data into Mongodb
-        var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
-        BusinessLayer.insertTeamMemberData(data);
-        //Change to new Input data for Teamwork
-        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
         case "COMMIT TEAMWORK":
-        //Continue get input data about the Team
-        var message = {
-           "text": "Please tell about your Teamwork ",
-           "attachments": [
-            {
-                "text": "Please share us how do you feel now about your teamwork",
-                "fallback": "You are unable to choose this option",
-                "callback_id": "InpputTeamwork",
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
-            }]
-            }   
-        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
 
-        //-----------Insert Database MongoDB for Teamwork here-------------//
-        //Function to insert Database: value take from happinesslevel variable
+        if (happinesslevel =='') 
+        {
+            //Continue get input data about the Team
+              var message = {
+            "text": "*Please CHOOSE YOUR TEAMWORK HAPPINESS LEVEL FIRST !*",
+            "attachments": [
+             {
+                 "text": "Please share us how do you feel now about your teamwork",
+                 "fallback": "You are unable to choose this option",
+                 "callback_id": "InpputTeamwork",
+                 "color": "#3AA3E3",
+                 "attachment_type": "default",
+                 "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
+             }]
+             }   
+ 
+            sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+    
+        }
+        else
+        {
+            //Continue get input data about the Team
+            happinesslevel ='';
+            CommitBtn = 'COMMIT INDIVIDUAL';
+             var message = {
+            "text": "Thank you so much for your sharing ! See you ! ",
+            /*"attachments": [
+             {
+                 "text": "Please share us how do you feel now about your teamwork",
+                 "fallback": "You are unable to choose this option",
+                 "callback_id": "InpputTeamwork",
+                 "color": "#3AA3E3",
+                 "attachment_type": "default",
+                 "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
+             }]*/
+             }   
+ 
+         console.log('Inserted Teamwork Happiness Level Data to MongoDB');
+ 
+         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+      
+         //-----------Insert Database MongoDB for Teamwork here-------------//
+         //Function to insert Database: value take from happinesslevel variable
+ 
 
+        }
+        
         //Message thank you
         break;
         default:
