@@ -549,7 +549,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             //console.log(dt);
             //store data into Mongodb
             var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
-            //BusinessLayer.insertTeamMemberData(data);
+            BusinessLayer.insertTeamMemberData(data);
             console.log('Inserted Individual Happiness Level Data to MongoDB');
             typeTeam ='T'; //Switch TypeTeam from Individual to Team
             //Continue get input data about the Team

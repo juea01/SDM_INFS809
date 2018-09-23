@@ -4,7 +4,7 @@
 var DbLayer = require("./DbLayer");
 
 //var url = "mongodb://localhost:27017/surveydb";
-var url = "mongodb://0.0.0.0:27017/surveydb";
+var url = "mongodb://fa6afdb2009c:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
