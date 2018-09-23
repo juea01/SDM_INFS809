@@ -569,19 +569,20 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 }]
                 }   
             sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
-        }
-        
 
-        //-----------Insert Database MongoDB here-------------//
+             //-----------Insert Database MongoDB here-------------//
         //Function to insert Database: value take from happinesslevel variable
         
         var dt = new Date();
         //console.log(dt);
         //store data into Mongodb
-        var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
+        var data = {name: "Sushi", team: "DevTeam08", date: "12July2018", rating: happinesslevel};
         //BusinessLayer.insertTeamMemberData(data);
         //Change to new Input data for Teamwork
-        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        
+        }
+        
+
         break;
 
         case "COMMIT TEAMWORK":
