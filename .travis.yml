@@ -3,6 +3,7 @@ node_js:
   - "0.10"
 branches:
   only:
+  - test01
   - development
 install:
   - npm install phantomjs -g
