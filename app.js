@@ -366,12 +366,12 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         
     {   
-        CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' 
+        CommitBtn = 'COMMIT !';//'COMMIT INDIVIDUAL' 
          var message = {
-           "text": "Please share about your happiness level now ?",
+           "text": "Please select an image to indicate how happy you are about your work.",
            "attachments": [
             {
-                "text": "Please share us how do you feel now",
+                "text": "",
                 "fallback": "You are unable to choose this option",
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
@@ -490,7 +490,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
-        case "COMMIT INDIVIDUAL":
+        case "COMMIT !": //Commit for Individual input data
         if (happinesslevel =='') {
             var message = {
                 "text": "*Please CHOOSE THE HAPPINES LEVEL FIRST !*",
@@ -520,13 +520,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             typeTeam ='T'; //Switch TypeTeam from Individual to Team
             //Continue get input data about the Team
             //Change to new Input data for Teamwork
-            CommitBtn = 'COMMIT TEAMWORK';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
+            CommitBtn = 'COMMIT';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
             happinesslevel = '';//Reset value to '';
             var message = {
-            "text": "_*Thank you so much for your feedback about yourself*_ \n *Please share more about your Teamwork !*",
+            "text": "_*Thank you so much for your feedback about yourself*_ \n *Please select an image to indicate how happy you think the team is about the work*",
             "attachments": [
                 {
-                    "text": "Please share us how do you feel now about your teamwork",
+                    "text": "",
                     "fallback": "You are unable to choose this option",
                     "callback_id": "InpputTeamwork",
                     "color": "#3AA3E3",
@@ -542,7 +542,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 
         break;
 
-        case "COMMIT TEAMWORK":
+        case "COMMIT": //Commit teamwork
 
         if (happinesslevel =='') 
         {
@@ -551,12 +551,12 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             "text": "*Please CHOOSE YOUR TEAMWORK HAPPINESS LEVEL FIRST !*",
             "attachments": [
              {
-                 "text": "Please share us how do you feel now about your teamwork",
+                 "text": "Please select an image to indicate how happy you think the team is about the work",
                  "fallback": "You are unable to choose this option",
                  "callback_id": "InpputTeamwork",
                  "color": "#3AA3E3",
                  "attachment_type": "default",
-                 "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
+                 "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT','','primary')
              }]
              }   
  
@@ -567,7 +567,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         {
             //Continue get input data about the Team
             happinesslevel ='';
-            CommitBtn = 'COMMIT INDIVIDUAL';//reset again back to Individual
+            CommitBtn = 'COMMIT !';//reset again back to Commit Individual
              var message = {
             "text": "Thank you so much for your sharing ! See you ! ",
             /*"attachments": [
@@ -586,7 +586,6 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             var dt = new Date();
             //console.log(dt);
             //store data into Mongodb
-            team_happiness
             var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
             BusinessLayer.insertTeamData(data);
             console.log('Inserted Individual Happiness Level Data to MongoDB');
