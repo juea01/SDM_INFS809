@@ -4,11 +4,18 @@
 var DbLayer = require("./DbLayer");
 
 //var url = "mongodb://localhost:27017/surveydb";
+<<<<<<< HEAD
 var url = "mongodb://a8764c050115:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
 var collectionNameTeam = "team_happiness";
+=======
+var url = "mongodb://2cf5db7d7b70:27017/surveydb";
+var dbName = "surveydb";
+
+var collectionName = "team_member_happiness";
+>>>>>>> developemnt_slackSp1
 //var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
 
 class BusinessLayer {
@@ -21,6 +28,7 @@ class BusinessLayer {
     
     }
 
+<<<<<<< HEAD
      static insertTeamData (data) {
         console.log("Business Layer, inserting team member data:"+collectionNameTeam);
         //insert data into db
@@ -28,6 +36,8 @@ class BusinessLayer {
     
     }
 
+=======
+>>>>>>> developemnt_slackSp1
 }
 
 
