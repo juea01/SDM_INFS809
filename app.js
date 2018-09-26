@@ -490,7 +490,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
         break;
 
-        case "COMMIT !": //Commit for Individual input data
+        case "COMMIT !": //Commit for Individual input
         if (happinesslevel =='') {
             var message = {
                 "text": "*Please CHOOSE THE HAPPINES LEVEL FIRST !*",
