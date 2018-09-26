@@ -73,7 +73,7 @@ app.get('/oauth', function(req, res) {
 
 
 //PHP Message function:
-// NewMessage creates a new Message
+// Define dynamic button in the message to Slack
 
 function ActionArr (name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5)
     { 
@@ -130,7 +130,7 @@ function ActionArr (name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,nam
 }
 
 
-//Add function to send Message to Slack
+//Send message function to Slack 
 function sendMessageToSlackResponseURL(responseURL,JSONmessage){
     var postOptions =
     {
@@ -256,34 +256,6 @@ function chatPostMessage(responseURL,attachment){
 }
 
 //10 September: Henry Add function to Update Message
-function chatUpdateMessage(responseURL,Timestamp,attachment){
-
-    var postOptions =
-    {
-        uri: 'https://slack.com/api/chat.update',
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        qs: {
-            "token": tokenId,//integration.get('slack_token'),
-            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            "username": 'HowIsIt',
-            "ts": Timestamp,
-            "attachments": JSON.stringify(attachment),
-            //"icon_url": SLACK_BOT_ICON,
-           },
-
-    }
-
-    request(postOptions, (error,response,body)=>{
-        if (error){
-            //handle errors as you see fit
-        }
-    })
-}
-
-//10 September: Henry Add function to Update Message
 function chatUpdateMessage2(responseURL,Timestamp,attachment){
     response_url = body.response_url;
     var postOptions =
@@ -376,7 +348,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
 });
 
 
-//Capture the feed back actions from user
+//Capture the feed back actions from user after select 
 app.post('/actions', urlencodedParser, (req, res) =>{
     res.status(200).end() // best practice to respond with 200 status
     var actionJSONPayload = JSON.parse(req.body.payload) // parse URL-encoded payload JSON string
@@ -608,14 +580,18 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                  "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
              }]*/
              }   
- 
-         console.log('Inserted Teamwork Happiness Level Data to MongoDB');
+
+         //-----------Insert Database MongoDB for Teamwork here-------------//
+         //Function to insert Database: value take from happinesslevel variable           
+            var dt = new Date();
+            //console.log(dt);
+            //store data into Mongodb
+            team_happiness
+            var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
+            BusinessLayer.insertTeamMemberData(data);
+            console.log('Inserted Individual Happiness Level Data to MongoDB');
  
          sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
-      
-         //-----------Insert Database MongoDB for Teamwork here-------------//
-         //Function to insert Database: value take from happinesslevel variable
- 
 
         }
         
