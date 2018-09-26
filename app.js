@@ -17,7 +17,8 @@ var happinesslevel ='';
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
-var tokenId = 'xoxp-413354812451-413568494785-433650059650-047d018e19b8968c76c217215850b7d7';
+var tokenId = 'xoxp-413354812451-413568494785-441369548615-85bf3fa7942f65691a65145e363199b6';
+
 var tsMessage ='';
 var response_url;
 var msg;
@@ -190,6 +191,153 @@ function UploadFile2Slack (filename)
 
 }
 
+
+//26 September 2018: Henry added Diaglog fucntion for researcher
+function SendDiaglogInputData(responseURL,attachment,trigger_id){
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/dialog.open',//'https://slack.com/api/chat.postEphemeral'
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "trigger_id": trigger_id,
+            //"attachments": JSON.stringify(attachment)
+            "dialog": JSON.stringify({
+                title: 'Survery for happiness',
+                callback_id: 'submit-ticket',
+                submit_label: 'Submit',
+                elements: [
+                    {
+                        label:'how happy you are' ,//'PL an image to indicate how happy you are about your work.',
+                        type: 'select',
+                        name: 'IndividualHappiness',
+                        options: [
+                          { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
+                          { label: 'Happy :smile_cat:', value: 'Happy' },
+                          { label: 'Neutrual :smirk_cat:', value: 'Neutrual' },
+                          { label: 'Bad :smirk_cat:', value: 'Bad' },
+                          { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
+                        ],
+                      },
+                  
+                      {
+                    label:'How happy teamwork',  //'Please select an image to indicate how happy you think the team is about the work',
+                    type: 'select',
+                    name: 'TeamHappiness',
+                    options: [
+                      { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
+                      { label: 'Happy :smile_cat:', value: 'Happy' },
+                      { label: 'Neutrual :smirk_cat:', value: 'Neutrual' },
+                      { label: 'Bad :smirk_cat:', value: 'Bad' },
+                      { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
+                    ],
+                  },
+
+
+                ],
+              }),
+           }
+
+    }
+
+    
+    request(postOptions, (error,response,body)=>{
+        //resMess = .response; 
+        //var reqBody = body;
+        //bodyMesg =body;
+        //responseURL = reqBody.response_url;
+        //response_url = responseURL;
+        //const body = JSON.parse(req.body.payload);
+        //tsMessage = body.ts;
+        console.log(body);
+        //tsMessage = JSON.parse(body).ts;
+        //console.log("Ben trong ham request " + tsMessage);
+        //tsMessage = JSON.parse(body).ts;
+        //console.log(tsMessage);
+        if (error){
+            //handle errors as you see fit
+        }
+
+        
+    })
+    
+}
+//26 September 2018: Henry added Diaglog fucntion for researcher
+function SendDiaglogReport(responseURL,attachment,trigger_id){
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/dialog.open',//'https://slack.com/api/chat.postEphemeral'
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "trigger_id": trigger_id,
+            //"user": 'UC5GQEJP3', //@phucpebble
+            //"attachments": JSON.stringify(attachment)
+            "dialog": JSON.stringify({
+                title: 'Report for researcher !',
+                callback_id: 'submit-ticket',
+                submit_label: 'Submit',
+                elements: [
+                  {
+                    label: 'Date From',
+                    type: 'text',
+                    name: 'DateFrom',
+                    value: new Date(),
+                    hint: 'Start date of the report',
+                  },
+                  {
+                    label: 'Date To',
+                    type: 'text',
+                    name: 'DateTo',
+                    value: new Date(),
+                    hint: 'End date of the report',
+                    //optional: true,
+                  },
+                  {
+                    label: 'Type of report',
+                    type: 'select',
+                    name: 'Type',
+                    options: [
+                      { label: 'Individual', value: 'Individual' },
+                      { label: 'Team', value: 'Team' },
+                    ],
+                  },
+                ],
+              }),
+           }
+
+    }
+
+    
+    request(postOptions, (error,response,body)=>{
+        //resMess = .response; 
+        //var reqBody = body;
+        //bodyMesg =body;
+        //responseURL = reqBody.response_url;
+        //response_url = responseURL;
+        //const body = JSON.parse(req.body.payload);
+        //tsMessage = body.ts;
+        console.log(body);
+        //tsMessage = JSON.parse(body).ts;
+        //console.log("Ben trong ham request " + tsMessage);
+        //tsMessage = JSON.parse(body).ts;
+        //console.log(tsMessage);
+        if (error){
+            //handle errors as you see fit
+        }
+
+        
+    })
+    
+}
+
+
 function sendToSlack(attachment, message) {
     request.post({
     json: true,
@@ -348,16 +496,18 @@ app.post('/mbot', urlencodedParser, function(req, res) {
 });
 
 
+
 //Capture the feed back actions from user after select 
 app.post('/actions', urlencodedParser, (req, res) =>{
     res.status(200).end() // best practice to respond with 200 status
     var actionJSONPayload = JSON.parse(req.body.payload) // parse URL-encoded payload JSON string
-    var message = {
+    /*var message = {
         "text": actionJSONPayload.user.name+" clicked: " + actionJSONPayload.actions[0].name,
         "replace_original": false
-    }
+    }*/
     //sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
-
+   // console.log(actionJSONPayload.submission.Type + "  DateFrom" + actionJSONPayload.submission.DateFrom + "  DateTo  " +actionJSONPayload.submission.DateTo);
+   // console.log(actionJSONPayload);
     bodyMesg = req.body;
     responseURL = bodyMesg.response_url;
     //console.log("Log gia tri Bodymesg");
@@ -604,6 +754,29 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 
 });
 
+// Route the Slack command /rbot in the config slack app: Process with report part
+app.post('/mbot2', urlencodedParser, function(req, res) {
+    //res.send('Welcome to Monitor slack bot of Group 08 !');
+    res.status(200).end(); // best practice to respond with empty 200 status code
+    var reqBody = req.body;
+    responseURL = reqBody.response_url;
+    const { text, trigger_id } = req.body;
+    console.log(trigger_id);
+    //console.log(body);
+    var attachment=[
+        {
+            "text": "test",
+            "fallback": "You are unable to choose this option",
+            "callback_id": "wopr_survey",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
+       
+      }]
+      SendDiaglogInputData(responseURL,attachment,trigger_id)
+    
+
+});
 
 // Route the Slack command /rbot in the config slack app: Process with report part
 app.post('/rbot', urlencodedParser, function(req, res) {
@@ -611,7 +784,21 @@ app.post('/rbot', urlencodedParser, function(req, res) {
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     responseURL = reqBody.response_url;
-    
+    const { text, trigger_id } = req.body;
+    console.log(trigger_id);
+    //console.log(body);
+    var attachment=[
+        {
+            "text": "test",
+            "fallback": "You are unable to choose this option",
+            "callback_id": "wopr_survey",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
+       
+      }]
+      SendDiaglogReport(responseURL,attachment,trigger_id)
+    /*
     if ( 1 != 1)//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         {
         res.status(403).end("Acess fordidden") 
@@ -652,7 +839,7 @@ app.post('/rbot', urlencodedParser, function(req, res) {
     
         sendMessageToSlackResponseURL(responseURL, message);
         //console.log("Gia tri body sau khi goi ben  ngoai" + bodyMesg);
-
-    }
+    
+}*/
 
 });
