@@ -1,4 +1,5 @@
-//Henry test with ngrok 2 Sep
+/********************************Develop "Product How.Is.IT"*********************************************/
+/************************AGIGLE METHODOLOGY, SCRUM FRAMEWORK AND EXPERIMENT CHATBOT**********************/
 
 // First we need to import the HTTP module. This module contains all the logic for dealing with HTTP requests.
 var http = require('http');
@@ -11,13 +12,6 @@ var bodyParser = require('body-parser');
 var BusinessLayer = require('./BusinessLayer');
 var name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5;
 var happinesslevel ='';
-
-
-
-//10 September
-//const axios = require('axios');
-//const qs = require('qs');
-//const apiUrl = 'https://slack.com/api';
 
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
