@@ -17,7 +17,7 @@ var happinesslevel ='';
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
-var tokenId = 'xoxp-413354812451-413568494785-441369548615-85bf3fa7942f65691a65145e363199b6';
+var tokenId = 'xoxp-413354812451-413568494785-443252427698-ced07f606ba7e92a4556bc0b8f028f6e';
 
 var tsMessage ='';
 var response_url;
@@ -361,10 +361,11 @@ function sendToSlack(attachment, message) {
 
 //10 September: Henry Add function to chat.postMessage
 
-function chatPostMessage(responseURL,attachment){
+function SendRemider(tokenId){
+   
     var postOptions =
     {
-        uri: 'https://slack.com/api/chat.postMessage',//'https://slack.com/api/chat.postEphemeral'
+        uri: 'https://slack.com/api/chat.postEphemeral',//'https://slack.com/api/chat.postMessage',//
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -372,9 +373,48 @@ function chatPostMessage(responseURL,attachment){
         qs: {
             "token": tokenId,//integration.get('slack_token'),
             "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            //"user": 'UC5GQEJP3', //@phucpebble
+            "user": 'UC5GQEJP3', //Need put your ID @phucpebble
             "username": 'HowIsIt',
-            "attachments": JSON.stringify(attachment)
+            "attachments": JSON.stringify(
+                [
+                    {
+                        "text": "You can choose one option to go next",
+                        "fallback": "You are unable to choose this option",
+                        "callback_id": "wopr_survey",
+                        "color": "#3AA3E3",
+                        "attachment_type": "default",
+                        "actions": [
+                            {
+                                "name": "Ignore",
+                                "text": "Ignore",
+                                "type": "button",
+                                "value": "Ignore",
+                                    "confirm": {
+                                    "title": "Are you sure?",
+                                    "text": "Wouldn't you like to share something now?",
+                                    "ok_text": "Yes",
+                                    "dismiss_text": "No"
+                                }
+                            },
+                            {
+                                "name": "Later",
+                                "text": "Later",
+                                "type": "button",
+                                "value": "Later"
+                            },
+                            {
+                                "name": "Letgo",
+                                "text": "Let go",
+                                "style": "primary", //danger, warning
+                                "type": "button",
+                                "value": "Letgo"
+                           
+                            }
+                        ]
+                    }
+                ]
+
+            )
             //"icon_url": SLACK_BOT_ICON,
            }
 
@@ -773,7 +813,8 @@ app.post('/mbot2', urlencodedParser, function(req, res) {
             //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
        
       }]
-      SendDiaglogInputData(responseURL,attachment,trigger_id)
+     // SendDiaglogInputData(responseURL,attachment,trigger_id)
+     SendRemider(tokenId)
     
 
 });
