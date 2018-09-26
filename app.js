@@ -567,7 +567,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         {
             //Continue get input data about the Team
             happinesslevel ='';
-            CommitBtn = 'COMMIT INDIVIDUAL';
+            CommitBtn = 'COMMIT INDIVIDUAL';//reset again back to Individual
              var message = {
             "text": "Thank you so much for your sharing ! See you ! ",
             /*"attachments": [
@@ -588,7 +588,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             //store data into Mongodb
             team_happiness
             var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: happinesslevel};
-            BusinessLayer.insertTeamMemberData(data);
+            BusinessLayer.insertTeamData(data);
             console.log('Inserted Individual Happiness Level Data to MongoDB');
  
          sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
