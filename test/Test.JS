@@ -9,7 +9,7 @@ describe('Test URL API', function() {
         request.get({ url: baseUrl },
             function(response) {
                     expect(response.statusCode).to.equal(200);
-                    console.log(body);
+                    return assert.equal(200);
                 done();
             });
     });
