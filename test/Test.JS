@@ -6,6 +6,8 @@ var expect = require("chai").expect;
 var baseUrl = "https://slack.com/api";
 var util = require("util");
 var testData = require('./index');
+var chai = require('chai');
+var assert = chai.assert;
 
 var Runner = require('mocha').Runner;
 var Suite = require('mocha').Suite;
