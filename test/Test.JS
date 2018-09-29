@@ -10,7 +10,6 @@ describe('Test URL API', function() {
             function(response) {
                     expect(response.statusCode).to.equal(200);
                     return assert.equal(200);
-                done();
             });
     });
-});
+});.call(this);
