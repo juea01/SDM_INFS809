@@ -44,11 +44,9 @@ function run(tests) {
 
 \\Check URL Connection
 describe('Test URL API', function() {
-    it('returns luke', function(done) {
-        request.get({ url: baseUrl },
-            function(response) {
-                    expect(response.statusCode).to.equal(200);
-                    return assert.equal(200);
+    it('return 200', function() {
+        request.get({url: baseUrl},
+        return assert.equal(200);
             });
     });
 });
