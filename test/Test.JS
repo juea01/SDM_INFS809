@@ -10,16 +10,15 @@ var chai = require('chai');
 var assert = chai.assert;
 
 
-\\it('should return 200', function (done) {
-  var options = {
-    url: 'http://www.vnexpress.net:80',
-  };
-  request.get(options, function (err, res, body) {
-    expect(res.statusCode).to.equal(200);
-    expect(res.body).to.equal('correct header');
-    done();
+(function() {
+  var assert = require("assert"),
+    plus = require("../lib/plus");
+  suite("plus", function() {
+    test("2 plus 3 should equals 5", function() {
+      return assert.equal(6, plus(2, 3));
+    });
   });
-});\\
+
 
 \\String Test
 describe('Basic Mocha String Test', function () {
@@ -32,3 +31,4 @@ describe('Basic Mocha String Test', function () {
         assert.equal("Hello".charAt(0), 'H');
     });
 });
+}).call(this);
