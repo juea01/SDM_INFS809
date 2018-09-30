@@ -17,18 +17,4 @@ var assert = chai.assert;
     test("2 plus 3 should equals 5", function() {
       return assert.equal(6, plus(2, 3));
     });
-  });
-
-
-\\String Test
-describe('Basic Mocha String Test', function () {
- it('should return number of charachters in a string', function () {
-        assert.equal("Hello".length, 4);
-    });
-	
-\\Outtest
- it('should return first charachter of the string', function () {
-        assert.equal("Hello".charAt(0), 'H');
-    });
-});
-}).call(this);
+  });.call(this);
