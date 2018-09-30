@@ -10,9 +10,6 @@ var chai = require('chai');
 var assert = chai.assert;
 
 
-var Runner = require('mocha').Runner;
-var Suite = require('mocha').Suite;
-
 it('should return 200', function (done) {
   var options = {
     url: 'http://www.vnexpress.net:80',
@@ -22,4 +19,16 @@ it('should return 200', function (done) {
     expect(res.body).to.equal('correct header');
     done();
   });
+});
+
+\\String Test
+describe('Basic Mocha String Test', function () {
+ it('should return number of charachters in a string', function () {
+        assert.equal("Hello".length, 4);
+    });
+	
+\\Outtest
+ it('should return first charachter of the string', function () {
+        assert.equal("Hello".charAt(0), 'H');
+    });
 });
