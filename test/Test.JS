@@ -10,7 +10,7 @@ var chai = require('chai');
 var assert = chai.assert;
 
 
-it('should return 200', function (done) {
+\\it('should return 200', function (done) {
   var options = {
     url: 'http://www.vnexpress.net:80',
   };
@@ -19,7 +19,7 @@ it('should return 200', function (done) {
     expect(res.body).to.equal('correct header');
     done();
   });
-});
+});\\
 
 \\String Test
 describe('Basic Mocha String Test', function () {
