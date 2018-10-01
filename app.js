@@ -15,9 +15,12 @@ var happinesslevel ='';
 
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
-var clientId = '413354812451.427533931460';
-var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
-var tokenId = 'xoxp-413354812451-413568494785-443252427698-ced07f606ba7e92a4556bc0b8f028f6e';
+//var clientId = '413354812451.427533931460';
+//var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
+var clientId = '413354812451.438134630340';
+var clientSecret = '77790b7b7989d74840852d8f44684e81';
+var tokenId = 'xoxp-413354812451-416948347173-445609735761-cc4df9d5d74794020f4a01ac8bdbaa78';
+
 
 var tsMessage ='';
 var response_url;
@@ -373,7 +376,7 @@ function SendRemider(tokenId){
         qs: {
             "token": tokenId,//integration.get('slack_token'),
             "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            "user": 'UC5GQEJP3', //Need put your ID @phucpebble
+            "user": 'UC8TWA753', //Need put your ID @phucpebble
             "username": 'HowIsIt',
             "attachments": JSON.stringify(
                 [
@@ -442,6 +445,16 @@ function SendRemider(tokenId){
     })
     
 }
+
+
+//timer functions for reminder
+function remindTeamMembers() {
+    SendRemider(tokenId)
+
+}
+
+setInterval(remindTeamMembers,1000);
+
 
 //10 September: Henry Add function to Update Message
 function chatUpdateMessage2(responseURL,Timestamp,attachment){
