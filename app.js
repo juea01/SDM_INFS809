@@ -3,28 +3,30 @@
 
 // First we need to import the HTTP module. This module contains all the logic for dealing with HTTP requests.
 var http = require('http');
-
+var fs = require('fs');
 // Import express and request modules
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 //import our business layer
 var BusinessLayer = require('./BusinessLayer');
+const dateformat = require('dateformat');
 var name1,icon1,style1,name2,icon2,style2,name3,icon3,style3,name4,icon4,style4,name5,icon5,style5;
 var happinesslevel ='';
-
+var Slack = require('nodejslack');
 // Store our app's ID and Secret. These we got from Step 1. 
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
-var tokenId = 'xoxp-413354812451-413568494785-443308591185-d92252e86ae4928013ee38e495a7e945'; //Parameter in https://api.slack.com/apps/ACKFPTDDJ/oauth?
-
+var tokenId = 'xoxb-413354812451-428794835063-XLs3DAn7aT7UvRF69DcES5Ic'; //Parameter with XOXB, not XOXP in https://api.slack.com/apps/ACKFPTDDJ/oauth?
+var userID = 'UC5GQEJP3';//'CCTQ8NXCP';
 var tsMessage ='';
 var response_url;
 var msg;
 var bodyMesg;
 var typeTeam ='I';//Individual
 var CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
+var SubmmitType;
 
 // Instantiates Express and assigns our app variable to it
 var app = express();
@@ -32,6 +34,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // Again, we define a port we want to listen to
 const PORT=8000;
+var slack = new Slack(tokenId);
 
 // Lets start our server
 app.listen(PORT, function () {
@@ -159,13 +162,17 @@ function UploadFile2Slack (filename)
         uri: 'https://slack.com/api/files.upload',//'https://slack.com/api/chat.postEphemeral'
         method: 'POST',
         headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
+            'Content-type': 'multipart/form-data'
         },
         qs: {
             "token": tokenId,//integration.get('slack_token'),
-            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
+            "channels": 'CCTQ8NXCP',//integration.get('channel_id'),
             //"user": 'UC5GQEJP3', //@phucpebble
-            "filename": filename//'https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx',
+            "filetype": "auto",
+            "filename": "Test_slack.xlsx",
+            "file": fs.createReadStream("./Test_slack.xlsx"),
+            //"file": "https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx",//fs.createReadStream('Test_slack.xlsx'),
+            //'https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx',
             //"attachments": JSON.stringify(attachment)
             //"icon_url": SLACK_BOT_ICON,
            }
@@ -191,9 +198,42 @@ function UploadFile2Slack (filename)
 
 }
 
+function UploadFile2Slack2 (filename, userID)
+{  
+    var form = {
+        file: fs.createReadStream(filename),//'Test_slack.xlsx'), // Optional, via multipart/form-data. If omitting this parameter, you MUST submit content 
+        // content: 'Your text here', // Optional, File contents. If omitting this parameter, you must provide a `file`  
+        filename: filename,//'Test_slack.xlsx', // Required  
+        fileType: 'auto', // Optional, See more file types in https://api.slack.com/types/file#file_types 
+        title: 'Plese download your file!', // Optional 
+        //initial_comment: 'First comment about this file.', // Optional 
+        channels: userID //'CCTQ8NXCP' //Optional, If you want to put more than one channel, separate using comma, example: 'general,random' 
+      };
+  
+      slack.fileUpload(form)
+      .then(function(response){
+  
+          // Slack sends a json with a boolean var ok.  
+          // Error example : data = { ok: false, error: 'user_not_found'         } 
+          // Error example : data = { ok: true, file: 'user_not_found' } 
+          if(!response || !response.ok){
+              return Promise.reject(new Error('Something wrong happened during the upload.'));
+          }
+          //console.log('Uploaded Successfully:',response);
+  
+          return Promise.resolve(response);
+      })
+      .catch(function(err){
+          return err;
+      });
+
+}
+
+
 
 //26 September 2018: Henry added Diaglog fucntion for researcher
 function SendDiaglogInputData(responseURL,attachment,trigger_id){
+    SubmmitType ='InputData';
     var postOptions =
     {
         uri: 'https://slack.com/api/dialog.open',//'https://slack.com/api/chat.postEphemeral'
@@ -207,7 +247,7 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
             //"attachments": JSON.stringify(attachment)
             "dialog": JSON.stringify({
                 title: 'Survery for happiness',
-                callback_id: 'submit-ticket',
+                callback_id: 'Submit-ticket',
                 submit_label: 'Submit',
                 elements: [
                     {
@@ -240,6 +280,7 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                     label:'More comment',  //'Please select an image to indicate how happy you think the team is about the work',
                     type: 'text',
                     name: 'Comment',
+                    optional: true,
                     hint: 'Put your comment here',
                   },
 
@@ -273,6 +314,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
 }
 //26 September 2018: Henry added Diaglog fucntion for researcher
 function SendDiaglogReport(responseURL,attachment,trigger_id){
+    var dt = new Date();
+    SubmmitType ='Report';
     var postOptions =
     {
         uri: 'https://slack.com/api/dialog.open',//'https://slack.com/api/chat.postEphemeral'
@@ -287,21 +330,21 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
             //"attachments": JSON.stringify(attachment)
             "dialog": JSON.stringify({
                 title: 'Report for researcher !',
-                callback_id: 'submit-ticket',
-                submit_label: 'Submit',
+                callback_id: 'Statistic-ticket',
+                submit_label: 'Statistic',
                 elements: [
                   {
                     label: 'Date From',
                     type: 'text',
                     name: 'DateFrom',
-                    value: new Date(),
+                    value: dateformat(dt, 'mmmm dS, yyyy'),
                     hint: 'Start date of the report',
                   },
                   {
                     label: 'Date To',
                     type: 'text',
                     name: 'DateTo',
-                    value: new Date(),
+                    value: dateformat(dt, 'mmmm dS, yyyy'),
                     hint: 'End date of the report',
                     //optional: true,
                   },
@@ -456,7 +499,7 @@ function remindTeamMembers() {
 
 }
 
-setInterval(remindTeamMembers,1000);
+setInterval(remindTeamMembers,15000);
 
 
 //10 September: Henry Add function to Update Message
@@ -563,12 +606,52 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     }*/
     //sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
    // console.log(actionJSONPayload.submission.Type + "  DateFrom" + actionJSONPayload.submission.DateFrom + "  DateTo  " +actionJSONPayload.submission.DateTo);
-   // console.log(actionJSONPayload);
+    //console.log(actionJSONPayload);
     bodyMesg = req.body;
     responseURL = bodyMesg.response_url;
     //console.log("Log gia tri Bodymesg");
     //console.log(bodyMesg);
-   
+    if (actionJSONPayload.type =="dialog_submission")
+    {
+       console.log(SubmmitType);
+       console.log(actionJSONPayload.callback_id);
+       if (SubmmitType == "InputData")
+       {
+
+        var dt1 = actionJSONPayload.submission.DateFrom;
+        var dt2 = actionJSONPayload.submission.DateTo;
+        
+        var happinesslevel1 = actionJSONPayload.submission.IndividualHappiness;
+        var comment = actionJSONPayload.submission.Comment;
+        //console.log(dt);
+        //store data into Mongodb
+        var data1 = {name: "Sushi", team: "DevTeam08", date: dt1, rating: happinesslevel1};
+        BusinessLayer.insertTeamMemberData(data1);
+        console.log('Inserted Individual Happiness Level Data to MongoDB');
+
+        //-----------Insert Database MongoDB for Teamwork here-------------//
+        var happinesslevel2 = actionJSONPayload.submission.TeamHappiness;
+        var data2 = {name: "Sushi", team: "DevTeam08", date: dt2, rating: happinesslevel2};
+        BusinessLayer.insertTeamData(data2);
+        console.log('Inserted Individual Happiness Level Data to MongoDB');
+
+       }
+
+       if (SubmmitType == "Report") //Case of /rbot extract data
+       {
+        
+        //UploadFile2Slack (filename)
+        var filename ='Test_slack.xlsx';
+        UploadFile2Slack2 (filename, userID);
+          
+       }
+
+
+    }
+    else
+    {
+
+    
     if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         
     {   
@@ -622,9 +705,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                
                  sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
             };
+
+        }
+            
     // Helper functions
     //console.log("Truoc khi chon gia tri Happy " + bodyMesg);
     //console.log(actionJSONPayload);
+    /*
     switch(actionJSONPayload.actions[0].value)
     {
         case "Thrilled":
@@ -776,15 +863,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             CommitBtn = 'COMMIT !';//reset again back to Commit Individual
              var message = {
             "text": "Thank you so much for your sharing ! See you ! ",
-            /*"attachments": [
-             {
-                 "text": "Please share us how do you feel now about your teamwork",
-                 "fallback": "You are unable to choose this option",
-                 "callback_id": "InpputTeamwork",
-                 "color": "#3AA3E3",
-                 "attachment_type": "default",
-                 "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','','COMMIT TEAMWORK','','primary')
-             }]*/
+            
              }   
 
          //-----------Insert Database MongoDB for Teamwork here-------------//
@@ -805,7 +884,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         default:
         break;
     
-    }
+    }*/
 
 
 });
