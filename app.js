@@ -17,7 +17,7 @@ var happinesslevel ='';
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
-var tokenId = 'xoxp-413354812451-413568494785-443252427698-ced07f606ba7e92a4556bc0b8f028f6e';
+var tokenId = 'xoxp-413354812451-413568494785-443308591185-d92252e86ae4928013ee38e495a7e945'; //Parameter in https://api.slack.com/apps/ACKFPTDDJ/oauth?
 
 var tsMessage ='';
 var response_url;
@@ -144,7 +144,7 @@ function sendMessageToSlackResponseURL(responseURL,JSONmessage){
     }
 
     request(postOptions, (error,response,body)=>{
-        if (error){localStorage
+        if (error){
             //handle errors as you see fit
         }
     })
@@ -211,31 +211,37 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                 submit_label: 'Submit',
                 elements: [
                     {
-                        label:'how happy you are' ,//'PL an image to indicate how happy you are about your work.',
+                        label:'How happy are you ?' ,//'PL an image to indicate how happy you are about your work.',
                         type: 'select',
                         name: 'IndividualHappiness',
                         options: [
                           { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
                           { label: 'Happy :smile_cat:', value: 'Happy' },
-                          { label: 'Neutrual :smirk_cat:', value: 'Neutrual' },
+                          { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
                           { label: 'Bad :smirk_cat:', value: 'Bad' },
                           { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
                         ],
                       },
                   
                       {
-                    label:'How happy teamwork',  //'Please select an image to indicate how happy you think the team is about the work',
+                    label:'How happy is your team ?',  //'Please select an image to indicate how happy you think the team is about the work',
                     type: 'select',
                     name: 'TeamHappiness',
                     options: [
                       { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
                       { label: 'Happy :smile_cat:', value: 'Happy' },
-                      { label: 'Neutrual :smirk_cat:', value: 'Neutrual' },
+                      { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
                       { label: 'Bad :smirk_cat:', value: 'Bad' },
                       { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
                     ],
                   },
 
+                  {
+                    label:'More comment',  //'Please select an image to indicate how happy you think the team is about the work',
+                    type: 'text',
+                    name: 'Comment',
+                    hint: 'Put your comment here',
+                  },
 
                 ],
               }),
@@ -797,11 +803,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 // Route the Slack command /rbot in the config slack app: Process with report part
 app.post('/mbot2', urlencodedParser, function(req, res) {
     //res.send('Welcome to Monitor slack bot of Group 08 !');
+    const { text, trigger_id } = req.body;
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     responseURL = reqBody.response_url;
-    const { text, trigger_id } = req.body;
-    console.log(trigger_id);
+    //console.log("Triger_id");
+    console.log(req.body);
+    //console.log(trigger_id);
     //console.log(body);
     var attachment=[
         {
@@ -813,8 +821,8 @@ app.post('/mbot2', urlencodedParser, function(req, res) {
             //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
        
       }]
-     // SendDiaglogInputData(responseURL,attachment,trigger_id)
-     SendRemider(tokenId)
+    SendDiaglogInputData(responseURL,attachment,trigger_id)
+     //SendRemider(tokenId)
     
 
 });
