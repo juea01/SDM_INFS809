@@ -9,6 +9,7 @@ var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
 var collectionNameTeam = "team_happiness";
+var collectionNameTeamMember = "team_member";
 //var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
 
 class BusinessLayer {
@@ -26,6 +27,18 @@ class BusinessLayer {
         //insert data into db
         DbLayer.insertData(url,dbName,collectionNameTeam,data);
     
+    }
+
+    static insertNewTeamMember(Member) {
+        console.log("Business Layer, inserting new team member");
+        DbLayer.insertData(url,dbName,collectionNameTeamMember,data);
+    }
+
+    static insertReminder() {
+        console.log("Business Layer, inserting  Reminder:"+collectionName);
+        //insert data into db
+        //required format : var data = {name: "Sushi", team: "DevTeam08", date: dt, rating: NA, Reminder: 1};
+        DbLayer.insertData(url,dbName,collectionName,data);
     }
 
 }

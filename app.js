@@ -379,7 +379,7 @@ function SendRemider(tokenId){
         qs: {
             "token": tokenId,//integration.get('slack_token'),
             "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            "user": 'UC5GQEJP3', //Need put your ID @phucpebble
+            "user": 'UC8TWA753', //Need put your ID @phucpebble
             "username": 'HowIsIt',
             "attachments": JSON.stringify(
                 [
@@ -448,6 +448,16 @@ function SendRemider(tokenId){
     })
     
 }
+
+
+//timer functions for reminder
+function remindTeamMembers() {
+    SendRemider(tokenId)
+
+}
+
+setInterval(remindTeamMembers,1000);
+
 
 //10 September: Henry Add function to Update Message
 function chatUpdateMessage2(responseURL,Timestamp,attachment){
