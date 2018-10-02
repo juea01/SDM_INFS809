@@ -504,7 +504,6 @@ function remindTeamMembers() {
 
 }
 
-<<<<<<< HEAD
 // for every 24 hours (for now just set 10 minutes for testing)
 setInterval(remindTeamMembersDaily,100000);
 
@@ -513,9 +512,6 @@ setInterval(remindTeamMembers,10000);
 
 
 
-=======
-setInterval(remindTeamMembers,15000);
->>>>>>> c2d70eef879996e3f1cd29c4bc3965a934a2e242
 
 
 //10 September: Henry Add function to Update Message
