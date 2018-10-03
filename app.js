@@ -497,12 +497,28 @@ function SendRemider(tokenId, userID){
 
 
 //timer functions for reminder
+function remindTeamMembersDaily() {
+    SendRemider(tokenId)
+
+}
+
 function remindTeamMembers() {
     SendRemider(tokenId,userID)
 
 }
 
+<<<<<<< HEAD
 setInterval(remindTeamMembers,10000);
+=======
+// for every 24 hours (for now just set 10 minutes for testing)
+setInterval(remindTeamMembersDaily,100000);
+
+// for every 2 minutes (for now just set 1 minutes for testing)
+setInterval(remindTeamMembers,10000);
+
+
+
+>>>>>>> 8440c6c860f55d9dd6cff7e622d527b246fc6f49
 
 
 //10 September: Henry Add function to Update Message
