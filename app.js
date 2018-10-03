@@ -19,7 +19,7 @@ var Slack = require('nodejslack');
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
 var tokenId = 'xoxb-413354812451-428794835063-XLs3DAn7aT7UvRF69DcES5Ic'; //Parameter with XOXB, not XOXP in https://api.slack.com/apps/ACKFPTDDJ/oauth?
-var userID = 'UC5GQEJP3';//'CCTQ8NXCP';
+var userID = 'UC5GQEJP3';//'UC5GQEJP3';//'CCTQ8NXCP';
 var tsMessage ='';
 var response_url;
 var msg;
@@ -27,6 +27,7 @@ var bodyMesg;
 var typeTeam ='I';//Individual
 var CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
 var SubmmitType;
+var delaytime = 2;
 
 // Instantiates Express and assigns our app variable to it
 var app = express();
@@ -372,7 +373,7 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
         //response_url = responseURL;
         //const body = JSON.parse(req.body.payload);
         //tsMessage = body.ts;
-        console.log(body);
+        //console.log(body);
         //tsMessage = JSON.parse(body).ts;
         //console.log("Ben trong ham request " + tsMessage);
         //tsMessage = JSON.parse(body).ts;
@@ -410,7 +411,7 @@ function sendToSlack(attachment, message) {
 
 //10 September: Henry Add function to chat.postMessage
 
-function SendRemider(tokenId){
+function SendRemider(tokenId, userID){
    
     var postOptions =
     {
@@ -422,8 +423,10 @@ function SendRemider(tokenId){
         qs: {
             "token": tokenId,//integration.get('slack_token'),
             "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            "user": 'UC8TWA753', //Need put your ID @phucpebble
+            "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
             "username": 'HowIsIt',
+            "text": '*DATA SURVEY REMIDER* \n\n\nPlease choose the option by typing the command below:\n - /delay for doing servey later, example: /delay 35 means delaying 35 minutes. The value can be between 5 and 50 minutes. \n*- /mbot for do survey* \n*- /rbot for statistic*'
+            /*
             "attachments": JSON.stringify(
                 [
                     {
@@ -452,10 +455,10 @@ function SendRemider(tokenId){
                                 "value": "Later"
                             },
                             {
-                                "name": "Letgo",
-                                "text": "Let go",
-                                "style": "primary", //danger, warning
-                                "type": "button",
+                                "name": "Type /mbot to go continue !",
+                                "text": "Type /mbot to go continue",
+                                //"style": "primary", //danger, warning
+                                "type": "text",
                                 "value": "Letgo"
                            
                             }
@@ -463,7 +466,7 @@ function SendRemider(tokenId){
                     }
                 ]
 
-            )
+            )*/
             //"icon_url": SLACK_BOT_ICON,
            }
 
@@ -511,7 +514,7 @@ getData();
 
 
 function remindTeamMembers() {
-    SendRemider(tokenId)
+    SendRemider(tokenId,userID)
 
 }
 
@@ -558,7 +561,7 @@ function chatUpdateMessage2(responseURL,Timestamp,attachment){
 }
 
 // Route the Slack command /mbot in the config slack app: Process with input happiness level part
-app.post('/mbot', urlencodedParser, function(req, res) {
+app.post('/mbot2', urlencodedParser, function(req, res) {
     //res.send('Welcome to Monitor slack bot of Group 08 !');
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
@@ -627,6 +630,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
 app.post('/actions', urlencodedParser, (req, res) =>{
     res.status(200).end() // best practice to respond with 200 status
     var actionJSONPayload = JSON.parse(req.body.payload) // parse URL-encoded payload JSON string
+    const { text, trigger_id } = req.body;
     /*var message = {
         "text": actionJSONPayload.user.name+" clicked: " + actionJSONPayload.actions[0].name,
         "replace_original": false
@@ -661,6 +665,51 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var data2 = {name: "Sushi", team: "DevTeam08", date: dt2, rating: happinesslevel2};
         BusinessLayer.insertTeamData(data2);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
+        //send thank mesage:
+        var message = {
+            "text": "Thank you for your sharing information.",
+            "attachments": [
+                {
+                    "text": "See you later!",
+                    "fallback": "You are unable to choose this option",
+                    "callback_id": "wopr_survey",
+                    "color": "#3AA3E3",
+                    "attachment_type": "default"
+                    /*"actions": [
+                        {
+                            "name": "Ignore",
+                            "text": "Ignore",
+                            "type": "button",
+                            "value": "Ignore",
+                                "confirm": {
+                                "title": "Are you sure?",
+                                "text": "Wouldn't you like to share something now?",
+                                "ok_text": "Yes",
+                                "dismiss_text": "No"
+                            }
+                        },
+                        {
+                            "name": "Later",
+                            "text": "Later",
+                            "type": "button",
+                            "value": "Later"
+                        },
+                        {
+                            "name": "Letgo",
+                            "text": "Let go",
+                            "style": "primary", //danger, warning
+                            "type": "button",
+                            "value": "Letgo"
+                       
+                        }
+                    ]*/
+                }
+            ]
+        }
+        
+    
+        sendMessageToSlackResponseURL(responseURL, message);
+
 
        }
 
@@ -681,7 +730,8 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     
     if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         
-    {   
+    {  
+        
         CommitBtn = 'COMMIT !';//'COMMIT INDIVIDUAL' 
          var message = {
            "text": "Please select an image to indicate how happy you are about your work.",
@@ -696,11 +746,21 @@ app.post('/actions', urlencodedParser, (req, res) =>{
            
           }]
         }   
-        
-        
-        //chatPostMessage(actionJSONPayload.response_url, attachment);
        
-        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message);  
+        sendMessageToSlackResponseURL(actionJSONPayload.response_url, message); 
+
+        //Function to show the diaglog for input data
+        /*var attachment=[
+         {
+            "text": "test",
+            "fallback": "You are unable to choose this option",
+            "callback_id": "wopr_survey",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
+       
+         }]
+         SendDiaglogInputData(responseURL,attachment,trigger_id) */
     };
       
     //20 September: Process for report select menu part
@@ -917,16 +977,39 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 });
 
 // Route the Slack command /rbot in the config slack app: Process with report part
-app.post('/mbot2', urlencodedParser, function(req, res) {
+app.post('/delay', urlencodedParser, function(req, res) 
+{
+    delaytime =2;
+    console.log(req.body.text);
+    delaytime = req.body.text; 
+    if (( delaytime >5 ) && ( delaytime < 50 ) )
+    {
+        delaytime = req.body.text;
+        console.log(delaytime);
+    }
+    else {delaytime = 2};
+
+    
+    userID = req.body.user_id;
+    console.log(delaytime);
+    //Hi Ar, you can continue to process after Delay here
+  
+
+});
+
+// Route the Slack command /rbot in the config slack app: Process with report part
+app.post('/mbot', urlencodedParser, function(req, res) {
     //res.send('Welcome to Monitor slack bot of Group 08 !');
     const { text, trigger_id } = req.body;
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     responseURL = reqBody.response_url;
     //console.log("Triger_id");
+    userID = req.body.user_id;
     console.log(req.body);
     //console.log(trigger_id);
     //console.log(body);
+    //Function to show the diaglog for input data
     var attachment=[
         {
             "text": "test",
@@ -938,7 +1021,7 @@ app.post('/mbot2', urlencodedParser, function(req, res) {
        
       }]
     SendDiaglogInputData(responseURL,attachment,trigger_id)
-     //SendRemider(tokenId)
+    //SendRemider(tokenId)
     
 
 });
@@ -962,7 +1045,8 @@ app.post('/rbot', urlencodedParser, function(req, res) {
             //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
        
       }]
-      SendDiaglogReport(responseURL,attachment,trigger_id)
+      SendDiaglogReport(responseURL,attachment,trigger_id);
+      //res.send('Thank you for your sharing !');
     /*
     if ( 1 != 1)//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         {
