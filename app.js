@@ -494,10 +494,21 @@ function SendRemider(tokenId){
 
 
 //timer functions for reminder
-function remindTeamMembersDaily() {
-    SendRemider(tokenId)
 
+function remindTeamMembersDaily(){
+     BusinessLayer.getTeamMembers(function(result){
+      
+        console.log("getData"+result.length);
+        for( i = 0; i< result.length;i++){
+            console.log(result[i].name);
+        }
+    });
 }
+
+getData();
+
+
+
 
 function remindTeamMembers() {
     SendRemider(tokenId)
@@ -505,10 +516,14 @@ function remindTeamMembers() {
 }
 
 // for every 24 hours (for now just set 10 minutes for testing)
-setInterval(remindTeamMembersDaily,100000);
+//read from team member db and remind them all
+var data = [{name: "Phauc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
+{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5GQEJP3"}];
+//BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
+//setInterval(remindTeamMembersDaily,10000);
 
 // for every 2 minutes (for now just set 1 minutes for testing)
-setInterval(remindTeamMembers,10000);
+//setInterval(remindTeamMembers,10000);
 
 
 

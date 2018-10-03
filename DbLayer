@@ -5,6 +5,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 class DbLayer {
 
+// this function can be used to insert single record into any given table of db
     static insertData (url,dbName,collection,myObj) {
         console.log("Creating Collection:"+collection);
      MongoClient.connect(url,function(err,db){
@@ -22,6 +23,47 @@ class DbLayer {
          
      });   
     }
+
+// this function can be used to insert many record into any given table of db
+static insertMembers (url,dbName,collection,myObj) {
+        console.log("Creating Collection:"+collection);
+     MongoClient.connect(url,function(err,db){
+         if (err) {
+          console.log(err);
+          throw err;
+         }
+            var dbo = db.db(dbName);
+            dbo.collection(collection).insertMany(myObj, function(err,res){
+                 if (err) throw err;
+                 console.log( "1 document inserted");
+                db.close();
+            });
+
+         
+     });   
+    }
+
+    // this function can be used to read many record of any given table of db
+static readMultipleData (url,dbName,collection,callback) {
+        console.log("Reading data from:"+collection);
+        var data;
+     MongoClient.connect(url,function(err,db){
+         if (err) {
+          console.log(err);
+          throw err;
+         }
+            var dbo = db.db(dbName);
+            dbo.collection(collection).find({}).toArray(function(err,res){
+                 if (err) throw err;
+                 callback(res);
+                db.close();
+            });
+
+         
+     });   
+    }
+
+
 
    
 
