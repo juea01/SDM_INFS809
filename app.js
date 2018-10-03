@@ -1006,7 +1006,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
        
       }]
     SendDiaglogInputData(responseURL,attachment,trigger_id)
-     //SendRemider(tokenId)
+    //SendRemider(tokenId)
     
 
 });
