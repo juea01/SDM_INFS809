@@ -497,6 +497,8 @@ function SendRemider(tokenId, userID){
 
 
 //timer functions for reminder
+//read data from db and remind them all
+// will trigger around 10 am every day
 function remindTeamMembersDaily(){
      BusinessLayer.getTeamMembers(function(result){
       
@@ -505,11 +507,10 @@ function remindTeamMembersDaily(){
             SendRemider(tokenId,result[i].userId);
         }
     });
+    setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminder());
+    console.log(BusinessLayer.getDailyReminder());
 }
 
-
-
-remindTeamMembersDaily();
 
 
 function remindTeamMembers() {
@@ -518,17 +519,13 @@ function remindTeamMembers() {
 }
 
 // for every 24 hours (for now just set 10 minutes for testing)
-//read from team member db and remind them all
-var data = [{name: "Phauc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
-{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
+// var data = [{name: "Phauc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
+// {name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
 //BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
-//setInterval(remindTeamMembersDaily,10000);
-
+setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminder());
+console.log(BusinessLayer.getDailyReminder());
 // for every 2 minutes (for now just set 1 minutes for testing)
 //setInterval(remindTeamMembers,10000);
-
-
-
 
 
 //10 September: Henry Add function to Update Message
