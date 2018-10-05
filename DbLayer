@@ -100,6 +100,28 @@ static readMultipleData (url,dbName,collection,callback) {
      });   
     }
 
+    static readHappiness(dateFrom,dateTo,url,dbName,collection,callback) {
+        console.log("Reading data from:"+collection);
+        var data;
+     MongoClient.connect(url,function(err,db){
+         if (err) {
+          console.log(err);
+          throw err;
+         }
+            var dbo = db.db(dbName);
+            dbo.collection(collection).find({date:{
+                $gte:new Date(dateFrom),
+                $lte:new Date(dateTo)
+            }}).toArray(function(err,res){
+                 if (err) throw err;
+                 callback(res);
+                db.close();
+            });
+
+         
+     });   
+    }
+
 
 
    
