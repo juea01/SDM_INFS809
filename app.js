@@ -28,20 +28,11 @@ var typeTeam ='I';//Individual
 var CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
 var SubmmitType;
 var delaytime = 2;
+var filecsv; 
 
 //for writing to file
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const csvWriter= createCsvWriter({
-    path: './file.csv',
-    header: [
-        //{id: 'name', title:'NAME'},
-        {id: 'name', title:'USER ID'},
-        {id: 'team', title:'TEAM'},
-        {id: 'date', title:'DATE'},
-        {id: 'rating', title:'RATING'},
-        {id: 'reminder', title:'REMINDER'}
-    ]
-});
+
 
 // Instantiates Express and assigns our app variable to it
 var app = express();
@@ -184,8 +175,8 @@ function UploadFile2Slack (filename)
             "channels": 'CCTQ8NXCP',//integration.get('channel_id'),
             //"user": 'UC5GQEJP3', //@phucpebble
             "filetype": "auto",
-            "filename": "file.csv",
-            "file": fs.createReadStream("./file.csv"),
+            "filename": filename, 
+            "file": fs.createReadStream(filename), //("./file.csv"),
             //"file": "https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx",//fs.createReadStream('Test_slack.xlsx'),
             //'https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx',
             //"attachments": JSON.stringify(attachment)
@@ -224,7 +215,7 @@ function UploadFile2Slack2 (filename, userID)
         //initial_comment: 'First comment about this file.', // Optional 
         channels: userID //'CCTQ8NXCP' //Optional, If you want to put more than one channel, separate using comma, example: 'general,random' 
       };
-  
+     console.log(filecsv);
       slack.fileUpload(form)
       .then(function(response){
   
@@ -355,7 +346,7 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
                     label: 'Date From',
                     type: 'text',
                     name: 'DateFrom',
-                    value: dateformat(dt1, 'yyyy-mm-dd'),
+                    value: dateformat(dt1, 'yyyy-mm-dd'),//filecsv
                     hint: 'Start date of the report yyyy-mm-dd',
                   },
                   {
@@ -384,13 +375,6 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
     
     request(postOptions, (error,response,body)=>{
         //resMess = .response; 
-        //var reqBody = body;
-        //bodyMesg =body;
-        //responseURL = reqBody.response_url;
-        //response_url = responseURL;
-        //const body = JSON.parse(req.body.payload);
-        //tsMessage = body.ts;
-        //console.log(body);
         //tsMessage = JSON.parse(body).ts;
         //console.log("Ben trong ham request " + tsMessage);
         //tsMessage = JSON.parse(body).ts;
@@ -497,12 +481,9 @@ function SendRemider(tokenId, userID){
         responseURL = reqBody.response_url;
         response_url = responseURL;
 
-        //tsMessage = body.ts;
-        console.log("Ben trong ham request " + responseURL);
+        //console.log("Ben trong ham request " + responseURL);
         tsMessage = JSON.parse(body).ts;
         //console.log("Ben trong ham request " + tsMessage);
-        //tsMessage = JSON.parse(body).ts;
-        //console.log(tsMessage);
         if (error){
             //handle errors as you see fit
         }
@@ -666,6 +647,8 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     {
        console.log(SubmmitType);
        console.log(actionJSONPayload.callback_id);
+
+       
        if (SubmmitType == "InputData")
        {
 
@@ -741,8 +724,10 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var dt1 = actionJSONPayload.submission.DateFrom;
         var dt2 = actionJSONPayload.submission.DateTo;
         var type = actionJSONPayload.submission.Type;
+        filecsv = "./" + dateformat(new Date(), 'ddhhmmss') + ".csv"//filecsv
+        console.log(filecsv);
         //UploadFile2Slack (filename)t
-        var filename ='file.csv';
+        //var filename ='file.csv';
         // var file = BusinessLayer.getFileForResearcher("1988-09-10","2018-05-05","individual");
         // console.log("fle"+file);
         //phauc call this
@@ -753,10 +738,21 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                     
            // console.log("getData"+result.length);
             console.log(result);
+            const csvWriter= createCsvWriter({
+                path: filecsv, //'./file.csv',
+                header: [
+                    //{id: 'name', title:'NAME'},
+                    {id: 'name', title:'USER ID'},
+                    {id: 'team', title:'TEAM'},
+                    {id: 'date', title:'DATE'},
+                    {id: 'rating', title:'RATING'},
+                    {id: 'reminder', title:'REMINDER'}
+                ]
+            });
             
             csvWriter.writeRecords(result).then(()=>{
                 console.log('Done writing to file');
-                UploadFile2Slack2 (filename, userID);
+                UploadFile2Slack2 (filecsv, userID);
                 //do whatever you want to do here
             });
         });
