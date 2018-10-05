@@ -535,9 +535,9 @@ function remindTeamMembers(tokenId,userID) {
 }
 
 // for every 24 hours (for now just set 10 minutes for testing)
-// var data = [{name: "Phauc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
-// {name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
-//BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
+ var data = [{name: "Phuc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
+{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
+BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
 handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
 console.log(BusinessLayer.getDailyReminderTimer());
 // for every 2 minutes (for now just set 1 minutes for testing)
@@ -546,19 +546,7 @@ remindTeamMembersDaily();
 
 
 
-// var file = BusinessLayer.getFileForResearcher("1988-09-10","2018-05-05","individual");
-// console.log("fle"+file);
-//phauc call this
-BusinessLayer.getDataByTeamDate(dateTo,dateFrom,type,function(result){
-            
-    console.log("getData"+result.length);
-    console.log(result);
-    
-    csvWriter.writeRecords(result).then(()=>{
-        console.log('Done writing to file');
-        //do whatever you want to do here
-    });
-});
+
 
 
 //10 September: Henry Add function to Update Message
@@ -744,9 +732,23 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 
        if (SubmmitType == "Report") //Case of /rbot extract data
        {
-        
+        var dt1 = actionJSONPayload.submission.DateFrom;
+        var dt2 = actionJSONPayload.submission.DateTo;
         //UploadFile2Slack (filename)
-        var filename ='Test_slack.xlsx';
+        var filename ='file.csv';
+        // var file = BusinessLayer.getFileForResearcher("1988-09-10","2018-05-05","individual");
+        // console.log("fle"+file);
+        //phauc call this
+        BusinessLayer.getDataByTeamDate(dt1,dt2,type,function(result){
+                    
+           // console.log("getData"+result.length);
+            console.log(result);
+            
+            csvWriter.writeRecords(result).then(()=>{
+                console.log('Done writing to file');
+                //do whatever you want to do here
+            });
+        });
         UploadFile2Slack2 (filename, userID);
           
        }
