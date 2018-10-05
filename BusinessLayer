@@ -24,6 +24,13 @@ class BusinessLayer {
         DbLayer.insertData(url,dbName,collectionName,data);
     
     }
+    
+    static updateTeamMemberData (data,myQuery) {
+        console.log("Business Layer, updating team member data:"+collectionName);
+        //insert data into db
+        DbLayer.updateData(url,dbName,collectionName,data,myQuery);
+    
+    }
 
      static insertTeamData (data) {
         console.log("Business Layer, inserting team member data:"+collectionNameTeam);
@@ -58,7 +65,15 @@ class BusinessLayer {
        });
     }
 
-    static getDailyReminder() {
+    static getTeamMemberHappinessByDateId(id,date,callback){
+        DbLayer.readTeamMemberHappiness(id,date,url,dbName,collectionName,function(data){
+           var result = data;
+           console.log(result);
+           callback(result);
+       });
+    }
+
+    static getDailyReminderTimer() {
         var now = new Date();
         now.setHours(now.getHours()+13); // nz is 13 hours a head of UTC time
         var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
@@ -66,6 +81,25 @@ class BusinessLayer {
             millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
         }
         return millisTill10;
+    }
+
+    static getTodayDate() {
+        var now = new Date();
+        
+        var date = now.getDate();
+        var month = now.getMonth()+1; //january is 0
+        var year = now.getFullYear();
+
+        if(date<10){
+            date = '0'+date;
+        }
+        if(month<10){
+            month = '0'+month;
+        }
+
+        var today = year+'-'+month+'-'+date;
+        return today;
+
     }
     
 

@@ -24,6 +24,24 @@ class DbLayer {
      });   
     }
 
+// this function can be used to update single record of any given table of db
+     static updateData (url,dbName,collection,myObj,myQuery) {
+     MongoClient.connect(url,function(err,db){
+         if (err) {
+          console.log(err);
+          throw err;
+         }
+            var dbo = db.db(dbName);
+            dbo.collection(collection).updateOne(myQuery,myObj, function(err,res){
+                 if (err) throw err;
+                 console.log( "1 document updated");
+                db.close();
+            });
+
+         
+     });   
+    }
+
 // this function can be used to insert many record into any given table of db
 static insertMembers (url,dbName,collection,myObj) {
         console.log("Creating Collection:"+collection);
@@ -54,6 +72,25 @@ static readMultipleData (url,dbName,collection,callback) {
          }
             var dbo = db.db(dbName);
             dbo.collection(collection).find({}).toArray(function(err,res){
+                 if (err) throw err;
+                 callback(res);
+                db.close();
+            });
+
+         
+     });   
+    }
+
+    static readTeamMemberHappiness (id,date,url,dbName,collection,callback) {
+        console.log("Reading data from:"+collection);
+        var data;
+     MongoClient.connect(url,function(err,db){
+         if (err) {
+          console.log(err);
+          throw err;
+         }
+            var dbo = db.db(dbName);
+            dbo.collection(collection).find({userId: id, date: new Date(date)}).toArray(function(err,res){
                  if (err) throw err;
                  callback(res);
                 db.close();

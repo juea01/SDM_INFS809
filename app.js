@@ -509,13 +509,13 @@ function remindTeamMembersDaily(){
         }
     });
     clearInterval(handle);
-    handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminder());
-    console.log(BusinessLayer.getDailyReminder());
+    handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
+    console.log(BusinessLayer.getDailyReminderTimer());
 }
 
 
 
-function remindTeamMembers() {
+function remindTeamMembers(tokenId,userID) {
     SendRemider(tokenId,userID)
 
 }
@@ -524,11 +524,11 @@ function remindTeamMembers() {
 // var data = [{name: "Phauc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
 // {name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
 //BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
-handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminder());
-console.log(BusinessLayer.getDailyReminder());
+handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
+console.log(BusinessLayer.getDailyReminderTimer());
 // for every 2 minutes (for now just set 1 minutes for testing)
 //setInterval(remindTeamMembers,10000);
-
+remindTeamMembersDaily();
 
 //10 September: Henry Add function to Update Message
 function chatUpdateMessage2(responseURL,Timestamp,attachment){
@@ -986,14 +986,44 @@ app.post('/delay', urlencodedParser, function(req, res)
         console.log(delaytime);
     }
     else {delaytime = 2};
-
     
     userID = req.body.user_id;
+    
+    //continue to process after Delay here
     console.log(delaytime);
-    //Hi Ar, you can continue to process after Delay here
-  
+    console.log(userID);
+    var todayDate = BusinessLayer.getTodayDate();
+    
+    
 
+    BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
+        var reminder = 0;
+        if(result.length === 0) {
+            data = {name: "DateTest", userId: userID, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 1};
+            BusinessLayer.insertTeamMemberData(data);
+            console.log("Data inserted");
+        } else {
+            reminder = result[0].Reminder;
+            reminder = reminder +1;
+            data = {$set: {Reminder: reminder}};
+            var query = {userId: userID, date: new Date(todayDate)};
+            BusinessLayer.updateTeamMemberData(data,query);
+            console.log("Data updated");
+
+        }
+
+        if(reminder <= 3) {
+             //create reminder 
+             setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
+             console.log("Reminder created");
+        } else {
+            console.log("no more reminder for today")
+        }
+    });
+
+   
 });
+
 
 // Route the Slack command /rbot in the config slack app: Process with report part
 app.post('/mbot', urlencodedParser, function(req, res) {
