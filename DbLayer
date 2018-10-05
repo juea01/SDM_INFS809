@@ -109,10 +109,13 @@ static readMultipleData (url,dbName,collection,callback) {
           throw err;
          }
             var dbo = db.db(dbName);
-            dbo.collection(collection).find({date:{
-                $gte:new Date(dateFrom),
-                $lte:new Date(dateTo)
-            }}).toArray(function(err,res){
+            //db.team_member_happiness.find({"date":{$lt:new Date("2018-10-10"), $gte: new Date("2018-10-01")}})
+            console.log("Trong ham doc DB");
+            console.log(new Date("2018-10-01"));
+            console.log(new Date(dateFrom));
+            var dtf = new Date(dateFrom);
+            var dtt = new Date(dateTo);
+            dbo.collection(collection).find({"date":{$gte: dtf, $lt: dtt}}).toArray(function(err,res){
                  if (err) throw err;
                  callback(res);
                 db.close();

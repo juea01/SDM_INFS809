@@ -73,10 +73,12 @@ class BusinessLayer {
 
      static getDataByTeamDate(dateFrom,dateTo,type,callback){
          var collection = collectionNameTeam;
-         if(type === 'individual') {
+         if(type == 'Individual') {
              collection = collectionName;
+            console.log(type);
+            console.log(collectionName);
          }
-         console.log(collection);
+
         DbLayer.readHappiness(dateFrom,dateTo,url,dbName,collection,function(data){
            var result = data;
            console.log(result);

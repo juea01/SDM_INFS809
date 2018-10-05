@@ -286,8 +286,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                       { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
                       { label: 'Happy :smile_cat:', value: 'Happy' },
                       { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
-                      { label: 'Bad :smirk_cat:', value: 'Bad' },
-                      { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
+                      { label: 'A bit unhappy :smirk_cat:', value: 'A bit unhappy' },
+                      { label: 'Very unhappy :crying_cat_face:', value: 'Very unhappy' },
                     ],
                   },
                   /*
@@ -329,7 +329,10 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
 }
 //26 September 2018: Henry added Diaglog fucntion for researcher
 function SendDiaglogReport(responseURL,attachment,trigger_id){
-    var dt = new Date();
+    
+    var dt1, dt2 = new Date();
+    dt2.setDate(dt2.getDate() +2); //System date on server delay 1 day ?
+
     SubmmitType ='Report';
     var postOptions =
     {
@@ -352,14 +355,14 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
                     label: 'Date From',
                     type: 'text',
                     name: 'DateFrom',
-                    value: dateformat(dt, 'yyyy-mm-dd'),
+                    value: dateformat(dt1, 'yyyy-mm-dd'),
                     hint: 'Start date of the report yyyy-mm-dd',
                   },
                   {
                     label: 'Date To',
                     type: 'text',
                     name: 'DateTo',
-                    value: dateformat(dt, 'yyyy-mm-dd'),
+                    value: dateformat(dt2, 'yyyy-mm-dd'),
                     hint: 'End date of the report yyyy-mm-dd',
                     //optional: true,
                   },
@@ -537,7 +540,7 @@ function remindTeamMembers(tokenId,userID) {
 // for every 24 hours (for now just set 10 minutes for testing)
  var data = [{name: "Phuc", team: "DevTeam08", RegistrationDate: "dt", userId: "CCTQ8NXCP"},
 {name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
-BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
+//BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
 handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
 console.log(BusinessLayer.getDailyReminderTimer());
 // for every 2 minutes (for now just set 1 minutes for testing)
@@ -666,20 +669,23 @@ app.post('/actions', urlencodedParser, (req, res) =>{
        if (SubmmitType == "InputData")
        {
 
-        var dt1 = actionJSONPayload.submission.DateFrom;
-        var dt2 = actionJSONPayload.submission.DateTo;
         
         var happinesslevel1 = actionJSONPayload.submission.IndividualHappiness;
         var comment = actionJSONPayload.submission.Comment;
         //console.log(dt);
         //store data into Mongodb
-        var data1 = {name: "Sushi", team: "DevTeam08", date: dt1, rating: happinesslevel1};
+        //date: BusinessLayer.getTodayDate()
+        //Lech 1 ngay:
+        var dt = new Date();
+        dt.setDate(dt.getDate() +1);
+        var data1 = {name: userID, team: "DevTeam08", date: dt, rating: happinesslevel1};
         BusinessLayer.insertTeamMemberData(data1);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
 
         //-----------Insert Database MongoDB for Teamwork here-------------//
+        //date: BusinessLayer.getTodayDate()
         var happinesslevel2 = actionJSONPayload.submission.TeamHappiness;
-        var data2 = {name: "Sushi", team: "DevTeam08", date: dt2, rating: happinesslevel2};
+        var data2 = {name: userID, team: "DevTeam08",  date: dt, rating: happinesslevel2};
         BusinessLayer.insertTeamData(data2);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
         //send thank mesage:
@@ -734,11 +740,15 @@ app.post('/actions', urlencodedParser, (req, res) =>{
        {
         var dt1 = actionJSONPayload.submission.DateFrom;
         var dt2 = actionJSONPayload.submission.DateTo;
-        //UploadFile2Slack (filename)
+        var type = actionJSONPayload.submission.Type;
+        //UploadFile2Slack (filename)t
         var filename ='file.csv';
         // var file = BusinessLayer.getFileForResearcher("1988-09-10","2018-05-05","individual");
         // console.log("fle"+file);
         //phauc call this
+        console.log(dt1);
+        
+        console.log(dt2);
         BusinessLayer.getDataByTeamDate(dt1,dt2,type,function(result){
                     
            // console.log("getData"+result.length);
