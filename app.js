@@ -29,6 +29,20 @@ var CommitBtn = 'COMMIT INDIVIDUAL';//'COMMIT INDIVIDUAL' or 'COMMIT TEAMWORK'
 var SubmmitType;
 var delaytime = 2;
 
+//for writing to file
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter= createCsvWriter({
+    path: './file.csv',
+    header: [
+        {id: 'name', title:'NAME'},
+        {id: 'userId', title:'USER ID'},
+        {id: 'Team', title:'TEAM'},
+        {id: 'date', title:'DATE'},
+        {id: 'rating', title:'RATING'},
+        {id: 'reminder', title:'REMINDER'}
+    ]
+});
+
 // Instantiates Express and assigns our app variable to it
 var app = express();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -529,6 +543,23 @@ console.log(BusinessLayer.getDailyReminderTimer());
 // for every 2 minutes (for now just set 1 minutes for testing)
 //setInterval(remindTeamMembers,10000);
 remindTeamMembersDaily();
+
+
+
+// var file = BusinessLayer.getFileForResearcher("1988-09-10","2018-05-05","individual");
+// console.log("fle"+file);
+//phauc call this
+BusinessLayer.getDataByTeamDate(dateTo,dateFrom,type,function(result){
+            
+    console.log("getData"+result.length);
+    console.log(result);
+    
+    csvWriter.writeRecords(result).then(()=>{
+        console.log('Done writing to file');
+        //do whatever you want to do here
+    });
+});
+
 
 //10 September: Henry Add function to Update Message
 function chatUpdateMessage2(responseURL,Timestamp,attachment){

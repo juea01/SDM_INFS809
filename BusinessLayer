@@ -4,8 +4,6 @@
 var DbLayer = require("./DbLayer");
 
 
-
-
 //var url = "mongodb://localhost:27017/surveydb";
 var url = "mongodb://033a9a8889fb:27017/surveydb";
 var dbName = "surveydb";
@@ -73,6 +71,19 @@ class BusinessLayer {
        });
     }
 
+     static getDataByTeamDate(dateFrom,dateTo,type,callback){
+         var collection = collectionNameTeam;
+         if(type === 'individual') {
+             collection = collectionName;
+         }
+         console.log(collection);
+        DbLayer.readHappiness(dateFrom,dateTo,url,dbName,collection,function(data){
+           var result = data;
+           console.log(result);
+           callback(result);
+       });
+    }
+
     static getDailyReminderTimer() {
         var now = new Date();
         now.setHours(now.getHours()+13); // nz is 13 hours a head of UTC time
@@ -101,7 +112,6 @@ class BusinessLayer {
         return today;
 
     }
-    
 
 }
 

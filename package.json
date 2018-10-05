@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"author": "yjx5980",
 	"dependencies": {
+		"csv-writer": "^1.2.0",
 		"express": "^4.16.3",
+		"jsonexport": "^2.3.0",
 		"mongodb": "^3.1.4",
 		"nodejslack": "^1.4.0",
 		"request": "^2.88.0"
