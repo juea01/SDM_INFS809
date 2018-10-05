@@ -34,9 +34,9 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter= createCsvWriter({
     path: './file.csv',
     header: [
-        {id: 'name', title:'NAME'},
-        {id: 'userId', title:'USER ID'},
-        {id: 'Team', title:'TEAM'},
+        //{id: 'name', title:'NAME'},
+        {id: 'name', title:'USER ID'},
+        {id: 'team', title:'TEAM'},
         {id: 'date', title:'DATE'},
         {id: 'rating', title:'RATING'},
         {id: 'reminder', title:'REMINDER'}
@@ -756,10 +756,11 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             
             csvWriter.writeRecords(result).then(()=>{
                 console.log('Done writing to file');
+                UploadFile2Slack2 (filename, userID);
                 //do whatever you want to do here
             });
         });
-        UploadFile2Slack2 (filename, userID);
+        
           
        }
 
