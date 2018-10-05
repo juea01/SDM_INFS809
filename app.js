@@ -184,8 +184,8 @@ function UploadFile2Slack (filename)
             "channels": 'CCTQ8NXCP',//integration.get('channel_id'),
             //"user": 'UC5GQEJP3', //@phucpebble
             "filetype": "auto",
-            "filename": "Test_slack.xlsx",
-            "file": fs.createReadStream("./Test_slack.xlsx"),
+            "filename": "file.csv",
+            "file": fs.createReadStream("./file.csv"),
             //"file": "https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx",//fs.createReadStream('Test_slack.xlsx'),
             //'https://files.slack.com/files-pri/TC5AEPWD9-FCX7GKNBC/test_slack.xlsx',
             //"attachments": JSON.stringify(attachment)
@@ -273,8 +273,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                           { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
                           { label: 'Happy :smile_cat:', value: 'Happy' },
                           { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
-                          { label: 'Bad :smirk_cat:', value: 'Bad' },
-                          { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
+                          { label: 'A bit unhappy :smirk_cat:', value: 'A bit unhappy' },
+                          { label: 'Very unhappy :crying_cat_face:', value: 'Very unhappy' },
                         ],
                       },
                   
@@ -290,14 +290,14 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                       { label: 'Very Bad :crying_cat_face:', value: 'Very Bad' },
                     ],
                   },
-
+                  /*
                   {
                     label:'More comment',  //'Please select an image to indicate how happy you think the team is about the work',
                     type: 'text',
                     name: 'Comment',
                     optional: true,
                     hint: 'Put your comment here',
-                  },
+                  },*/
 
                 ],
               }),
@@ -352,15 +352,15 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
                     label: 'Date From',
                     type: 'text',
                     name: 'DateFrom',
-                    value: dateformat(dt, 'mmmm dS, yyyy'),
-                    hint: 'Start date of the report',
+                    value: dateformat(dt, 'yyyy-mm-dd'),
+                    hint: 'Start date of the report yyyy-mm-dd',
                   },
                   {
                     label: 'Date To',
                     type: 'text',
                     name: 'DateTo',
-                    value: dateformat(dt, 'mmmm dS, yyyy'),
-                    hint: 'End date of the report',
+                    value: dateformat(dt, 'yyyy-mm-dd'),
+                    hint: 'End date of the report yyyy-mm-dd',
                     //optional: true,
                   },
                   {
