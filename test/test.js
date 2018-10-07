@@ -1,5 +1,5 @@
  //Test Case 1:
- /*(function() {
+ (function() {
  var assert = require("assert"),
  plus = require("../lib/plus");
  suite("plus", function() {
@@ -19,7 +19,7 @@
 	  return assert.equal(1, minus(10,9));
 	 });
 });
-}).call(this);*/
+}).call(this);
 
 //Test Case 3:
 
@@ -28,8 +28,8 @@
 	compares =require("../lib/Compare");
 	suite("Compare function reminder",function(){
 		it("Test compare reminder- Next reminder will <= 5 and => 50 mins", function(){
-			return assert(5 >= delay_min(2),"Min Time");
-			return assert(50 <= delay_max(50),"Max Time");
+			return assert(5 <= delay_min(2),"Min Time");
+			return assert(50 >= delay_max(50),"Max Time");
 		});
 	});
 }).call(this);
