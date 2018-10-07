@@ -28,7 +28,7 @@
 	compares =require("../lib/Compare");
 	suite("Compare function reminder",function(){
 		it("Test compare reminder- Next reminder will <= 5 and => 50 mins", function(){
-			return assert(5 <= delay_min(2),"Min Time");
+			return assert(5 =< delay_min(2),"Min Time");
 			return assert(50 => delay_max(49),"Max Time");
 		});
 	});
