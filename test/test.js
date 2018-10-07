@@ -6,9 +6,11 @@
       return assert.equal(5, plus(2, 3));
     });
   });
- suite("minus", function() {
+}).call(plus);
+  (function() {
+  suite("minus", function() {
 	 it("Canculator-check-function",function() {
 	  return assert.equal(1, minus(10,9));
 	 });
 });
-}).call(this);
+}).call(minus);
