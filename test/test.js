@@ -34,3 +34,14 @@
 	});
 }).call(this);
 
+//Test Case 4:
+ (function() {
+ var assert = require("assert"),
+ business = require("/BusinessLayer");
+ suite("business", function() {
+    it("insertTeamMemberData", function() {
+	 var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
+      return assert.equal("success", insertTeamMemberData(data));
+    });
+  });
+}).call(this);
