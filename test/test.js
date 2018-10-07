@@ -37,7 +37,7 @@
 //Test Case 4:
  (function() {
  var assert = require("assert"),
- business = require("/BusinessLayer");
+ business = require("./BusinessLayer");
  suite("business", function() {
     it("insertTeamMemberData", function() {
 	 var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
