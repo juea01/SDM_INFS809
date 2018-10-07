@@ -1,6 +1,6 @@
  var assert = require("assert"),
-   var plus = require("../lib/plus");
-	var minus = require("../lib/minus");
+   var plus = require("../lib/plus"),
+	var minus = require("../lib/minus"),
 (function() {
  suite("plus", function() {
     it("Calculator-test-function", function() {
