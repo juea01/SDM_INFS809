@@ -25,7 +25,7 @@
 
 (function(){
 	var assert = require("assert"),
-	compares =require("../lib/Compare")
+	compares =require("../lib/Compare");
 	suite("Compare function reminder",function(){
 		it("Test compare reminder", function(){
 			return assert(5 >= delay_min(5),"Min Time");
