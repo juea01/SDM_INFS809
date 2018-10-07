@@ -28,7 +28,8 @@
 	compares =require("../lib/Compare")
 	suite("Compare function reminder",function(){
 		it("Test compare reminder", function(){
-			return assert.equal(1, delay);
+			return assert(5=> delay_min(5));
+			return assert(50<=delay_max);
 		});
 	});
 }).call(this);
