@@ -2,8 +2,13 @@
   var assert = require("assert"),
     plus = require("../lib/plus");
  suite("plus", function() {
-    test("Calculator-test-function", function() {
+    it("Calculator-test-function", function() {
       return assert.equal(5, plus(2, 3));
     });
   });
+ suite("minus", function() {
+	 it("Canculator-check-function",function() {
+	  return assert.equal(1, minus(10,9));
+	 });
+});
 }).call(this);
