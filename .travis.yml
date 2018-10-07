@@ -1,6 +1,8 @@
 language: node_js
 node_js:
   - "0.10"
+services:
+  - mongodb
 branches:
   only:
   - test01
@@ -17,5 +19,6 @@ before_script:
   - chmod 0777 ./node_modules/.bin/mocha
   - gulp &
   - sleep 5 # give gulp background task some time to execute.
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - make test
