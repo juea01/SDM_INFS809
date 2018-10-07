@@ -1,7 +1,7 @@
+ var assert = require("assert"),
+   var plus = require("../lib/plus");
+	var minus = require("../lib/minus");
 (function() {
-  var assert = require("assert"),
-    plus = require("../lib/plus");
-	minus = require("../lib/minus");
  suite("plus", function() {
     it("Calculator-test-function", function() {
       return assert.equal(5, plus(2, 3));
