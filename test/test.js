@@ -1,4 +1,5 @@
- (function() {
+ //Test Case 1:
+ /*(function() {
  var assert = require("assert"),
  plus = require("../lib/plus");
  suite("plus", function() {
@@ -7,6 +8,9 @@
     });
   });
 }).call(this);
+  
+//Test Case 2:
+  
   (function() {
  var assert = require("assert"),
   minus = require("../lib/minus");	  
@@ -15,4 +19,17 @@
 	  return assert.equal(1, minus(10,9));
 	 });
 });
+}).call(this);*/
+
+//Test Case 3:
+
+(function(){
+	var assert = require("assert"),
+	compares =require("../lib/Compare")
+	suite("Compare function reminder",function(){
+		it("Test compare reminder", function(){
+			return assert.equal(1,delaytime(5,50));
+		});
+	});
 }).call(this);
+
