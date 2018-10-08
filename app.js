@@ -19,7 +19,7 @@ var Slack = require('nodejslack');
 var clientId = '413354812451.427533931460';
 var clientSecret = 'e93139ac9118b7ec41e90e4631ca11d5';
 var tokenId = 'xoxb-413354812451-428794835063-XLs3DAn7aT7UvRF69DcES5Ic'; //Parameter with XOXB, not XOXP in https://api.slack.com/apps/ACKFPTDDJ/oauth?
-var userID = 'UC5GQEJP3';//'UC5GQEJP3';//'CCTQ8NXCP';
+var userID = 'CCTQ8NXCP';//'UC5GQEJP3';//'UC5GQEJP3';//'CCTQ8NXCP';
 var tsMessage ='';
 var response_url;
 var msg;
@@ -213,7 +213,7 @@ function UploadFile2Slack2 (filename, userID)
         fileType: 'auto', // Optional, See more file types in https://api.slack.com/types/file#file_types 
         title: 'Plese download your file!', // Optional 
         //initial_comment: 'First comment about this file.', // Optional 
-        channels: userID //'CCTQ8NXCP' //Optional, If you want to put more than one channel, separate using comma, example: 'general,random' 
+        channels: 'CCTQ8NXCP'//userID //'CCTQ8NXCP' //Optional, If you want to put more than one channel, separate using comma, example: 'general,random' 
       };
      console.log(filecsv);
       slack.fileUpload(form)
@@ -322,7 +322,7 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
 function SendDiaglogReport(responseURL,attachment,trigger_id){
     
     var dt1, dt2 = new Date();
-    dt2.setDate(dt2.getDate() +2); //System date on server delay 1 day ?
+    dt2.setDate(dt2.getDate() +1); //System date on server delay 1 day ?
 
     SubmmitType ='Report';
     var postOptions =
@@ -660,7 +660,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         //date: BusinessLayer.getTodayDate()
         //Lech 1 ngay:
         var dt = new Date();
-        dt.setDate(dt.getDate() +1);
+        dt.setDate(dt.getDate());
         var data1 = {name: userID, team: "DevTeam08", date: dt, rating: happinesslevel1};
         BusinessLayer.insertTeamMemberData(data1);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
@@ -1017,10 +1017,10 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 // Route the Slack command /rbot in the config slack app: Process with report part
 app.post('/delay', urlencodedParser, function(req, res) 
 {
-    delaytime =2;
+    delaytime = 2;
     console.log(req.body.text);
     delaytime = req.body.text; 
-    if (( delaytime >5 ) && ( delaytime < 50 ) )
+    if (( delaytime >=1 ) && ( delaytime <= 50 ) )
     {
         delaytime = req.body.text;
         console.log(delaytime);
@@ -1052,7 +1052,7 @@ app.post('/delay', urlencodedParser, function(req, res)
 
         }
 
-        if(reminder <= 3) {
+        if(reminder <= 100) {
              //create reminder 
              setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
              console.log("Reminder created");
