@@ -264,15 +264,18 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                 callback_id: 'Submit-ticket',
                 submit_label: 'Submit',
                 elements: [
-                    {
+                   /* {
                         "label": ".",
                         "name": "email",
                         "type": "text",
                         "subtype": "email",
-                        "placeholder": "Please select one level to indicate how happy you are about your work."
-                    },
+                        "placeholder": "Please select one level to indicate how happy you are about your work.",
+                        //hint: 'Please choose one option to indicate how happy you are about your work.',
+                    },*/
                     {
-                        label:'How happy are you?', //PL an image to indicate how happy you are about your work.',
+                        label:'Please select one option', //PL an image to indicate how happy you are about your work.',
+                        hint: 'To indicate how happy you are about your work.',
+                        //placeholder: null,
                         type: 'select',
                         name: 'IndividualHappiness',
                         options: [
@@ -285,7 +288,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                       },
                   
                       {
-                    label:'How happy is your team ?',  //'Please select an image to indicate how happy you think the team is about the work',
+                    label:'Please select one option',  //'Please select an image to indicate how happy you think the team is about the work',
+                    hint: 'To indicate how happy you think the team is about the work.',
                     type: 'select',
                     name: 'TeamHappiness',
                     options: [
@@ -429,7 +433,7 @@ function sendToSlack(attachment, message) {
 //10 September: Henry Add function to chat.postMessage
 function SendRemider(tokenId, userID){
    //Do not need parameter tokenId, userID anymore
-    var message = {
+   var message = {
         "text": "*SCHEDULED TIME!*\n",
         "attachments": [
             {
@@ -478,34 +482,14 @@ function SendRemider(tokenId, userID){
                 ]
             }
         ]
-       
            
-        
     }
     
+   var responseURL ='';
     sendMessageToSlackResponseURL(responseURL, message);
 
-    }
-
-    
-    request(postOptions, (error,response,body)=>{
-        //resMess = .response; 
-        var reqBody = body;
-        bodyMesg =body;
-        responseURL = reqBody.response_url;
-        response_url = responseURL;
-
-        //console.log("Ben trong ham request " + responseURL);
-        tsMessage = JSON.parse(body).ts;
-        //console.log("Ben trong ham request " + tsMessage);
-        if (error){
-            //handle errors as you see fit
-        }
-
-        
-    })
-    
 }
+
 
 
 //timer functions for reminder
