@@ -264,23 +264,23 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                 callback_id: 'Submit-ticket',
                 submit_label: 'Submit',
                 elements: [
-                    /*{
+                    {
                         "label": ".",
                         "name": "email",
                         "type": "text",
                         "subtype": "email",
                         "placeholder": "Please select one level to indicate how happy you are about your work."
-                    },*/
+                    },
                     {
                         label:'How happy are you?', //PL an image to indicate how happy you are about your work.',
                         type: 'select',
                         name: 'IndividualHappiness',
                         options: [
-                          { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
-                          { label: 'Happy :smile_cat:', value: 'Happy' },
-                          { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
-                          { label: 'A bit unhappy :smirk_cat:', value: 'A bit unhappy' },
-                          { label: 'Very unhappy :crying_cat_face:', value: 'Very unhappy' },
+                          { label: 'Very Happy :joy:', value: 'Very Happy' }, //:heart_eyes_cat:
+                          { label: 'Happy :smiley:', value: 'Happy' }, //:smile_cat:
+                          { label: 'Neutrual :relaxed:', value: 'Neutrual' }, //:kissing_cat:
+                          { label: 'A bit unhappy :rage:', value: 'A bit unhappy' }, //:smirk_cat:
+                          { label: 'Very unhappy :imp:', value: 'Very unhappy' },//crying_cat_face
                         ],
                       },
                   
@@ -289,11 +289,11 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                     type: 'select',
                     name: 'TeamHappiness',
                     options: [
-                      { label: 'Very Happy :heart_eyes_cat:', value: 'Very Happy' },
-                      { label: 'Happy :smile_cat:', value: 'Happy' },
-                      { label: 'Neutrual :kissing_cat:', value: 'Neutrual' },
-                      { label: 'A bit unhappy :smirk_cat:', value: 'A bit unhappy' },
-                      { label: 'Very unhappy :crying_cat_face:', value: 'Very unhappy' },
+                      { label: 'Very Happy :joy:', value: 'Very Happy' },
+                      { label: 'Happy :smiley:', value: 'Happy' },
+                      { label: 'Neutrual :relaxed:', value: 'Neutrual' },
+                      { label: 'A bit unhappy :rage:', value: 'A bit unhappy' },
+                      { label: 'Very unhappy :imp:', value: 'Very unhappy' },
                     ],
                   },
                   /*
@@ -427,65 +427,63 @@ function sendToSlack(attachment, message) {
   }
 
 //10 September: Henry Add function to chat.postMessage
-
 function SendRemider(tokenId, userID){
-   
-    var postOptions =
-    {
-        uri: 'https://slack.com/api/chat.postEphemeral',//'https://slack.com/api/chat.postMessage',//
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        qs: {
-            "token": tokenId,//integration.get('slack_token'),
-            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
-            "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
-            "username": 'HowIsIt',
-            "text": '*DATA SURVEY REMINDER* \n\n\nPlease choose the option by typing the command below:\n - /delay for doing servey later, example: /delay 35 means delaying 35 minutes. The value can be between 5 and 50 minutes. \n*- /survey for do survey* \n*- /report for statistic*'
-            /*
-            "attachments": JSON.stringify(
-                [
+   //Do not need parameter tokenId, userID anymore
+    var message = {
+        "text": "*SCHEDULED TIME!*\n",
+        "attachments": [
+            {
+                "text": "It is now to enter your happiness information",
+                "fallback": "You are unable to choose this option",
+                "callback_id": "wopr_survey",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
                     {
-                        "text": "You can choose one option to go next",
-                        "fallback": "You are unable to choose this option",
-                        "callback_id": "wopr_survey",
-                        "color": "#3AA3E3",
-                        "attachment_type": "default",
-                        "actions": [
-                            {
-                                "name": "Ignore",
-                                "text": "Ignore",
-                                "type": "button",
-                                "value": "Ignore",
-                                    "confirm": {
-                                    "title": "Are you sure?",
-                                    "text": "Wouldn't you like to share something now?",
-                                    "ok_text": "Yes",
-                                    "dismiss_text": "No"
-                                }
-                            },
-                            {
-                                "name": "Later",
-                                "text": "Later",
-                                "type": "button",
-                                "value": "Later"
-                            },
-                            {
-                                "name": "Type /mbot to go continue !",
-                                "text": "Type /mbot to go continue",
-                                //"style": "primary", //danger, warning
-                                "type": "text",
-                                "value": "Letgo"
-                           
-                            }
-                        ]
+                        "name": "Letgo",
+                        "text": "Click here",
+                        "style": "primary", //danger, warning
+                        "type": "button",
+                        "value": "Letgo"
+                   
+                    }
+                
+                ]
+            },
+            {
+                "text": "I am busy, postpone for minutes:",
+                "fallback": "You are unable to choose this option",
+                "callback_id": "wopr_survey",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        "name": "5",
+                        "text": "05",
+                        "type": "button",
+                        "value": "Later"
+                    },
+                    {
+                        "name": "10",
+                        "text": "10",
+                        "type": "button",
+                        "value": "Later"
+                    },
+                    {
+                        "name": "20",
+                        "text": "20",
+                        "type": "button",
+                        "value": "Later"
                     }
                 ]
-
-            )*/
-            //"icon_url": SLACK_BOT_ICON,
-           }
+            }
+        ]
+       
+           
+        
+    }
+    
+    sendMessageToSlackResponseURL(responseURL, message);
 
     }
 
@@ -593,16 +591,16 @@ app.post('/mbot', urlencodedParser, function(req, res) {
     else {    
         //res.send('Welcome to Monitor slack bot of Group 08 !');
         var message = {
-            "text": "*WELCOME TO HOWISIT OF GROUP08 !*\n Would you like to share something now ?",
+            "text": "*SCHEDULED TIME!*\n",
             "attachments": [
                 {
-                    "text": "You can choose one option to go next",
+                    "text": "It is now to enter your happiness information",
                     "fallback": "You are unable to choose this option",
                     "callback_id": "wopr_survey",
                     "color": "#3AA3E3",
                     "attachment_type": "default",
                     "actions": [
-                        {
+                        /*{
                             "name": "Ignore",
                             "text": "Ignore",
                             "type": "button",
@@ -613,24 +611,50 @@ app.post('/mbot', urlencodedParser, function(req, res) {
                                 "ok_text": "Yes",
                                 "dismiss_text": "No"
                             }
-                        },
-                        {
-                            "name": "Later",
-                            "text": "Later",
-                            "type": "button",
-                            "value": "Later"
-                        },
+                        },*/
                         {
                             "name": "Letgo",
-                            "text": "Let go",
+                            "text": "Click here",
                             "style": "primary", //danger, warning
                             "type": "button",
                             "value": "Letgo"
                        
                         }
+                    
                     ]
                 }
+            ,
+            {
+                "text": "I am busy, postpone for minutes:",
+                "fallback": "You are unable to choose this option",
+                "callback_id": "wopr_survey",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        "name": "5",
+                        "text": "05",
+                        "type": "button",
+                        "value": "Later"
+                    },
+                    {
+                        "name": "10",
+                        "text": "10",
+                        "type": "button",
+                        "value": "Later"
+                    },
+                    {
+                        "name": "20",
+                        "text": "20",
+                        "type": "button",
+                        "value": "Later"
+                    }
+                ]
+            }
             ]
+           
+               
+            
         }
         
     
