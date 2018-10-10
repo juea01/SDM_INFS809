@@ -526,7 +526,7 @@ console.log(BusinessLayer.getDailyReminderTimer());
 //setInterval(remindTeamMembers,10000);
 //remindTeamMembersDaily();
 
-//userID = 'UC5GQEJP3';
+userID = 'UC5GQEJP3';
 SendRemider(tokenId, userID);
 
 
@@ -559,6 +559,41 @@ function chatUpdateMessage2(responseURL,Timestamp,attachment){
     })
 }
 
+function SendMessage(tokenId, userID){
+
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/chat.postEphemeral',//'https://slack.com/api/chat.postMessage',//
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
+            "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
+            "username": 'HowIsIt',
+            "text": '*Thank you, your answers have been anonymously saved*',
+            
+           }
+    }
+
+    request(postOptions, (error,response,body)=>{
+        //resMess = .response; 
+        //tsMessage = JSON.parse(body).ts;
+        console.log("Ben trong ham request " + response);
+        //tsMessage = JSON.parse(body).ts;
+        //console.log(tsMessage);
+        if (error){
+            //handle errors as you see fit
+        }
+
+        
+    })
+
+}
+
+
 // Route the Slack command /mbot in the config slack app: Process with input happiness level part
 app.post('/mbot', urlencodedParser, function(req, res) {
     //res.send('Welcome to Monitor slack bot of Group 08 !');
@@ -574,6 +609,8 @@ app.post('/mbot', urlencodedParser, function(req, res) {
     }
     else {    
         //res.send('Welcome to Monitor slack bot of Group 08 !');
+        //var reqBody = req.body;
+        //responseURL = reqBody.response_url;
         var message = {
             "text": "*SCHEDULED TIME!*\n",
             "attachments": [
@@ -676,8 +713,6 @@ app.post('/actions', urlencodedParser, (req, res) =>{
        
        if (SubmmitType == "InputData")
        {
-
-        
         var happinesslevel1 = actionJSONPayload.submission.IndividualHappiness;
         var comment = actionJSONPayload.submission.Comment;
         //console.log(dt);
@@ -697,52 +732,15 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         BusinessLayer.insertTeamData(data2);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
         //send thank mesage:
-        var message = {
-            "text": "Thank you for your sharing information.",
-            "attachments": [
-                {
-                    "text": "See you later!",
-                    "fallback": "You are unable to choose this option",
-                    "callback_id": "wopr_survey",
-                    "color": "#3AA3E3",
-                    "attachment_type": "default"
-                    /*"actions": [
-                        {
-                            "name": "Ignore",
-                            "text": "Ignore",
-                            "type": "button",
-                            "value": "Ignore",
-                                "confirm": {
-                                "title": "Are you sure?",
-                                "text": "Wouldn't you like to share something now?",
-                                "ok_text": "Yes",
-                                "dismiss_text": "No"
-                            }
-                        },
-                        {
-                            "name": "Later",
-                            "text": "Later",
-                            "type": "button",
-                            "value": "Later"
-                        },
-                        {
-                            "name": "Letgo",
-                            "text": "Let go",
-                            "style": "primary", //danger, warning
-                            "type": "button",
-                            "value": "Letgo"
-                       
-                        }
-                    ]*/
-                }
-            ]
-        }
-        
-    
-        sendMessageToSlackResponseURL(responseURL, message);
+        //Do not need parameter tokenId, userID anymore
+        userID = 'UC5GQEJP3';
+        console.log (tokenId);
+        console.log(userID)
 
+        SendMessage(tokenId, userID);
+ 
+         }
 
-       }
 
        if (SubmmitType == "Report") //Case of /rbot extract data
        {

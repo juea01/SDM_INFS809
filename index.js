@@ -90,6 +90,32 @@ function sendMessageToSlackResponseURL(responseURL,JSONmessage){
     })
 }
 
+function SendMessage(tokenId, userID){
+
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/chat.postEphemeral',
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
+            "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
+            //"username": 'HowIsIt',
+            "text": '*Thank you, your options have been saved anonymously*'
+            
+           }
+ 
+    }
+
+    request(postOptions, (error,response,body)=>{
+        if (error){
+            //handle errors as you see fit
+        }
+    })
+}
 
 //10 September: Henry Add function to chat.postMessage
 function chatPostMessage(responseURL,JSONmessage){
