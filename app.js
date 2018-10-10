@@ -448,22 +448,22 @@ function SendRemider(tokenId, userID){
                 "attachment_type": "default",
                 "actions": [
                     {
-                        "name": "5",
+                        "name": "05",
                         "text": "05",
                         "type": "button",
-                        "value": "Later"
+                        "value": "05"
                     },
                     {
                         "name": "10",
                         "text": "10",
                         "type": "button",
-                        "value": "Later"
+                        "value": "10"
                     },
                     {
                         "name": "20",
                         "text": "20",
                         "type": "button",
-                        "value": "Later"
+                        "value": "20"
                     }
                 ]
             }
@@ -637,22 +637,22 @@ app.post('/mbot', urlencodedParser, function(req, res) {
                 "attachment_type": "default",
                 "actions": [
                     {
-                        "name": "5",
+                        "name": "05",
                         "text": "05",
                         "type": "button",
-                        "value": "Later"
+                        "value": "05"
                     },
                     {
                         "name": "10",
                         "text": "10",
                         "type": "button",
-                        "value": "Later"
+                        "value": "10"
                     },
                     {
                         "name": "20",
                         "text": "20",
                         "type": "button",
-                        "value": "Later"
+                        "value": "20"
                     }
                 ]
             }
@@ -683,12 +683,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     bodyMesg = req.body;
     responseURL = bodyMesg.response_url;
     console.log(req.body);
+    //Case user's action come from Slack Diglog submit button
     if (actionJSONPayload.type =="dialog_submission")
     {
        console.log(submmitType);
        console.log(actionJSONPayload.callback_id);
 
-       
+       //Case user click Submit button on Survey dialog
        if (submmitType == "InputData")
        {
         var happinesslevel1 = actionJSONPayload.submission.IndividualHappiness;
@@ -719,7 +720,7 @@ app.post('/actions', urlencodedParser, (req, res) =>{
          }
 
 
-       if (submmitType == "Report") //Case of /rbot extract data
+       if (submmitType == "Report") //Case of user click Statistic button on researcher dialog
        {
         var dt1 = actionJSONPayload.submission.DateFrom;
         var dt2 = actionJSONPayload.submission.DateTo;
@@ -761,12 +762,12 @@ app.post('/actions', urlencodedParser, (req, res) =>{
 
 
     }
-    else
+    else //Check button click of user 
     {
 
-    console.log(actionJSONPayload);
-       //   const { text, trigger_id } = req.body;
-       var attachment=[
+        console.log(actionJSONPayload);
+          //   const { text, trigger_id } = req.body;
+         var attachment=[
         {
             "text": "test",
             "fallback": "You are unable to choose this option",
@@ -776,27 +777,60 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             //"actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',CommitBtn,'','danger')
        
           }]
-        SendDiaglogInputData(responseURL,attachment,trigger_id)
-    if ( actionJSONPayload.actions[0].value == "Letgo")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         
-    {  
         
-        commitBtn = 'COMMIT !';//'COMMIT INDIVIDUAL' 
-         var message = {
-           "text": "Please select an image to indicate how happy you are about your work.",
-           "attachments": [
-            {
-                "text": "",
-                "fallback": "You are unable to choose this option",
-                "callback_id": "wopr_survey",
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',commitBtn,'','danger')
-           
-          }]
-        }   
-        
-    };
+         if ( actionJSONPayload.actions[0].value == "Letgo")
+         {  
+             commitBtn = 'COMMIT !';//'COMMIT INDIVIDUAL' 
+            /*var message = {
+            * "text": "Please select an image to indicate how happy you are about your work.",
+            *"attachments": [
+            *  {
+            *   "text": "",
+            *   "fallback": "You are unable to choose this option",
+            *    "callback_id": "wopr_survey",
+            *   "color": "#3AA3E3",
+            *   "attachment_type": "default",
+            *   "actions": ActionArr('Thrilled',':heart_eyes_cat:','','Happy',':smile_cat:','','So So',':smirk_cat:','','Morose',':crying_cat_face:','',commitBtn,'','danger')
+            *  }]
+            } * */
+            //If click letgo button, then call Dialog survey
+            SendDiaglogInputData(responseURL,attachment,trigger_id);
+         };
+         //Check if Delay number button 05, 10, 20 are clicked
+         if (( actionJSONPayload.actions[0].value == "05") || ( actionJSONPayload.actions[0].value == "10") || ( actionJSONPayload.actions[0].value == "20"))
+         {  
+            delaytime = actionJSONPayload.actions[0].value;
+            console.log("Clicked " + delaytime);
+            //Process with Delay schedule fucntion 
+            var todayDate = BusinessLayer.getTodayDate();
+    
+             BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
+            var reminder = 0;
+            if(result.length === 0) {
+                data = {name: "DateTest", userId: userID, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 1};
+                BusinessLayer.insertTeamMemberData(data);
+                console.log("Data inserted");
+            } else {
+                reminder = result[0].Reminder;
+                reminder = reminder +1;
+                data = {$set: {Reminder: reminder}};
+                var query = {userId: userID, date: new Date(todayDate)};
+                BusinessLayer.updateTeamMemberData(data,query);
+                console.log("Data updated");
+
+            }
+
+            if(reminder <= 100) {
+                //create reminder 
+                setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
+                console.log("Reminder created");
+            } else {
+                console.log("no more reminder for today")
+            }
+            });
+         };
+
       
     //20 September: Process for report select menu part
     if ( actionJSONPayload.actions[0].value == "Team")//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
@@ -854,8 +888,6 @@ app.post('/delay', urlencodedParser, function(req, res)
     console.log(userID);
     var todayDate = BusinessLayer.getTodayDate();
     
-    
-
     BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
         var reminder = 0;
         if(result.length === 0) {
