@@ -545,7 +545,7 @@ function chatUpdateMessage2(responseURL,Timestamp,attachment){
     })
 }
 
-function SendMessage(tokenId, userID){
+function SendMessage(tokenId, userID, messagetxt){
 
     var postOptions =
     {
@@ -559,7 +559,7 @@ function SendMessage(tokenId, userID){
             "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
             "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
             "username": 'HowIsIt',
-            "text": '*Thank you, your answers have been anonymously saved*',
+            "text": messagetxt, //'*Thank you, your answers have been anonymously saved*',
             
            }
     }
@@ -709,13 +709,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var data2 = {name: userID, team: "DevTeam08",  date: dt, rating: happinesslevel2};
         BusinessLayer.insertTeamData(data2);
         console.log('Inserted Individual Happiness Level Data to MongoDB');
-        //send thank mesage:
+        //send thank mesage after Subbmit survey
         //Do not need parameter tokenId, userID anymore
         userID = 'UC5GQEJP3';
         console.log (tokenId);
         console.log(userID)
-
-        SendMessage(tokenId, userID);
+        var message = '*Thank you, your answers have been anonymously saved*';
+        SendMessage(tokenId, userID, message);
  
          }
 
@@ -825,8 +825,17 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 //create reminder 
                 setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
                 console.log("Reminder created");
+                //Send message to inform to end user about delay
+                userID = 'UC5GQEJP3';
+                var message = 'You have postponed ' + delaytime + ' minutes ! See you !';
+                SendMessage(tokenId, userID, message);
+
             } else {
                 console.log("no more reminder for today")
+                //Send message to inform to end user about delay
+                userID = 'UC5GQEJP3'
+                var message = 'You do not have right to delay !';
+                SendMessage(tokenId, userID, message);
             }
             });
          };
