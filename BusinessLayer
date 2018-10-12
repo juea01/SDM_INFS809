@@ -5,7 +5,7 @@ var DbLayer = require("./DbLayer");
 
 
 //var url = "mongodb://localhost:27017/surveydb";
-var url = "mongodb://35d22352e76f:27017/surveydb";
+var url = "mongodb://033a9a8889fb:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
@@ -113,6 +113,12 @@ class BusinessLayer {
         var today = year+'-'+month+'-'+date;
         return today;
 
+    }
+
+    static getMinutes() {
+        var now = new Date();
+        var currentTime = now.getMinutes();
+        return currentTime;
     }
 
 }

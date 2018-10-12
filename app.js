@@ -487,7 +487,10 @@ function remindTeamMembersDaily(){
       
         console.log("getData"+result.length);
         for( i = 0; i< result.length;i++){
-            SendRemider(tokenId,result[i].userId);
+            SendReminder(tokenId,result[i].userId);
+            var todayDate = BusinessLayer.getTodayDate();
+            data = {name: "DateTest", userId: result[i].userId, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 0, Delay: 0, InsertedTime: BusinessLayer.getMinutes()};
+            BusinessLayer.insertTeamMemberData(data);
         }
     });
     clearInterval(handle);
@@ -498,7 +501,7 @@ function remindTeamMembersDaily(){
 
 
 function remindTeamMembers(tokenId,userID) {
-    SendRemider(tokenId,userID)
+    SendReminder(tokenId,userID)
 
 }
 
@@ -512,7 +515,7 @@ console.log(BusinessLayer.getDailyReminderTimer());
 //setInterval(remindTeamMembers,10000);
 //remindTeamMembersDaily();
 
-userID = 'UC5GQEJP3';
+userID = 'UC8TWA753';
 SendRemider(tokenId, userID);
 
 
@@ -883,12 +886,13 @@ app.post('/delay', urlencodedParser, function(req, res)
     delaytime = 2;
     console.log(req.body.text);
     delaytime = req.body.text; 
-    if (( delaytime >=1 ) && ( delaytime <= 50 ) )
+    console.log(req.body.text);
+    if (!delaytime)
     {
-        delaytime = req.body.text;
-        console.log(delaytime);
+        delaytime = 2;
+        
     }
-    else {delaytime = 2};
+    delaytime = 1;
     
     userID = req.body.user_id;
     
@@ -898,27 +902,28 @@ app.post('/delay', urlencodedParser, function(req, res)
     var todayDate = BusinessLayer.getTodayDate();
     
     BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
-        var reminder = 0;
+        var delay = 0;
         if(result.length === 0) {
-            data = {name: "DateTest", userId: userID, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 1};
+            data = {name: "DateTest", userId: userID, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 0, Delay: delaytime};
             BusinessLayer.insertTeamMemberData(data);
             console.log("Data inserted");
         } else {
-            reminder = result[0].Reminder;
-            reminder = reminder +1;
-            data = {$set: {Reminder: reminder}};
+            delay = result[0].Delay;
+            delay = delay +delaytime;
+            data = {$set: {Delay: delay}};
             var query = {userId: userID, date: new Date(todayDate)};
             BusinessLayer.updateTeamMemberData(data,query);
             console.log("Data updated");
 
         }
 
-        if(reminder <= 100) {
+        // user can delay up to one hour (option are 5, 10, 20 minutes )
+        if(delay < 3) {
              //create reminder 
              setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
              console.log("Reminder created");
         } else {
-            console.log("no more reminder for today")
+            console.log("No more reminder for today as maximum delay time has been reached");
         }
     });
 
