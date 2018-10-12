@@ -283,7 +283,7 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                   
                       {
                     label:'Please select one option',  //'Please select an image to indicate how happy you think the team is about the work',
-                    hint: 'To indicate how happy you think the team is about the work.',
+                    hint: 'To indicate how happy you think the team is about their work.',
                     type: 'select',
                     name: 'TeamHappiness',
                     options: [
@@ -423,7 +423,7 @@ function SendRemider(tokenId, userID){
         "text": "*SCHEDULED TIME!*\n",
         "attachments": [
             {
-                "text": "It is now to enter your happiness information",
+                "text": "It's now time to enter your happiness information again",
                 "fallback": "You are unable to choose this option",
                 "callback_id": "wopr_survey",
                 "color": "#3AA3E3",
@@ -471,11 +471,89 @@ function SendRemider(tokenId, userID){
            
     }
     
-   var responseURL ='';
+    var responseURL ='';
     sendMessageToSlackResponseURL(responseURL, message);
 
 }
 
+function SendReminder(tokenId, userID){     
+     
+    var attachment=[
+    {
+        "text": "It's now time to enter your happiness information again",
+        "fallback": "You are unable to choose this option",
+        "callback_id": "wopr_survey",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
+            {
+                "name": "Letgo",
+                "text": "Click here",
+                "style": "primary", //danger, warning
+                "type": "button",
+                "value": "Letgo"
+           
+            }
+        
+        ]
+    },
+    {
+        "text": "I am busy, postpone for minutes:",
+        "fallback": "You are unable to choose this option",
+        "callback_id": "wopr_survey",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
+            {
+                "name": "05",
+                "text": "05",
+                "type": "button",
+                "value": "05"
+            },
+            {
+                "name": "10",
+                "text": "10",
+                "type": "button",
+                "value": "10"
+            },
+            {
+                "name": "20",
+                "text": "20",
+                "type": "button",
+                "value": "20"
+            }
+        ]
+      }
+    ]
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/chat.postEphemeral',//'https://slack.com/api/chat.postMessage',//
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "channel": 'CCTQ8NXCP',//integration.get('channel_id'),
+            "user": userID, //'UC8TWA753', //Need put your ID @phucpebble
+            "username": 'HowIsIt',
+            "text": "*SCHEDULED TIME!*\n",
+            "attachments": JSON.stringify(attachment),
+            
+           }
+    }
+
+    request(postOptions, (error,response,body)=>{
+        //console.log("Ben trong ham request " + response);
+        //tsMessage = JSON.parse(body).ts;
+        console.log(body);
+        if (error){
+            //handle errors as you see fit
+        }
+
+        
+    })
+ }
 
 
 //timer functions for reminder
@@ -513,7 +591,7 @@ console.log(BusinessLayer.getDailyReminderTimer());
 //remindTeamMembersDaily();
 
 userID = 'UC5GQEJP3';
-SendRemider(tokenId, userID);
+SendReminder(tokenId, userID);
 
 
 
@@ -584,6 +662,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
     responseURL = reqBody.response_url;
+    console.log(responseURL)
     
     if ( 1 != 1)//reqBody.token != YOUR_APP_VERIFICATION_TOKEN){
         {
@@ -952,13 +1031,13 @@ app.post('/survey', urlencodedParser, function(req, res) {
       }]
     console.log(responseURL);
     SendDiaglogInputData(responseURL,attachment,trigger_id)
-    //SendRemider(tokenId)
+    //SendReminder(tokenId)
     
 
 });
 
 // Route the Slack command /rbot in the config slack app: Process with report part
-app.post('/rbot', urlencodedParser, function(req, res) {
+app.post('/report', urlencodedParser, function(req, res) {
     //res.send('Welcome to Monitor slack bot of Group 08 !');
     res.status(200).end(); // best practice to respond with empty 200 status code
     var reqBody = req.body;
