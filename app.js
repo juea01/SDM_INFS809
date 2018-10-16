@@ -1025,22 +1025,21 @@ app.post('/actions', urlencodedParser, (req, res) =>{
             var todayDate = BusinessLayer.getTodayDate();
     
              BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
-            var reminder = 0;
+            var delay = 0;
             if(result.length === 0) {
                 data = {name: "DateTest", userId: userID, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 1};
                 BusinessLayer.insertTeamMemberData(data);
                 console.log("Data inserted");
             } else {
-                reminder = result[0].Reminder;
-                reminder = reminder +1;
-                data = {$set: {Reminder: reminder}};
+                delay = result[0].Delay + delaytime;
+                data = {$set: {Delay: delay}};
                 var query = {userId: userID, date: new Date(todayDate)};
                 BusinessLayer.updateTeamMemberData(data,query);
                 console.log("Data updated");
 
             }
 
-            if(reminder <= 100) {
+            if(delay < 60) {
                 //create reminder 
                 setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
                 console.log("Reminder created");
