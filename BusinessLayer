@@ -121,6 +121,19 @@ class BusinessLayer {
         return currentTime;
     }
 
+    static getHours() {
+        var now = new Date();
+        var currentTime = now.getHours();
+        return currentTime;
+    }
+
+    static getCurrentTimeInMinutes() {
+        var now = new Date();
+        var currentMinutes = now.getMinutes();
+        var currentHours = now.getHours();
+        return currentMinutes+(currentHours * 60);
+    }
+
 }
 
 

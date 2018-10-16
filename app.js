@@ -567,7 +567,7 @@ function remindTeamMembersDaily(){
         for( i = 0; i< result.length;i++){
             SendReminder(tokenId,result[i].userId);
             var todayDate = BusinessLayer.getTodayDate();
-            data = {name: "DateTest", userId: result[i].userId, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 0, Delay: 0, InsertedTime: BusinessLayer.getMinutes()};
+            data = {name: "DateTest", userId: result[i].userId, team: "DevTeam08", date: new Date(todayDate), rating: "NA", Reminder: 1, Delay: 0, InsertedTime: BusinessLayer.getCurrentTimeInMinutes()};
             BusinessLayer.insertTeamMemberData(data);
         }
     });
@@ -577,24 +577,70 @@ function remindTeamMembersDaily(){
 }
 
 
+var handleRemindTeamMember;
+function remindTeamMembers() {
 
-function remindTeamMembers(tokenId,userID) {
-    SendReminder(tokenId,userID)
+    var todayDate = BusinessLayer.getTodayDate();
+
+    BusinessLayer.getTeamMembers(function(result){
+      
+        
+        for( i = 0; i< result.length;i++){
+            BusinessLayer.getTeamMemberHappinessByDateId(result[i].userId,todayDate,function(data){
+        
+                
+                    //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
+                    //from first reminder then remind again
+                    if (data[0].Delay == 0 && data[0].Reminder <= 3 && data[0].rating == 'NA'){
+                        var currentMinutes = BusinessLayer.getCurrentTimeInMinutes();
+                        console.log("current minutes"+currentMinutes);
+                        if ((currentMinutes-data[0].InsertedTime)>2 && data[0].Reminder == 1){
+                            console.log("send reminder for reminder"+data[0].Reminder+1);
+                            SendReminder(tokenId,data[0].userId);
+                            dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
+                            var todayDate = BusinessLayer.getTodayDate();
+                            var query = {userId: data[0].userId, date: new Date(todayDate)};
+                            BusinessLayer.updateTeamMemberData(dataToUpdate,query);
+                        } else if ((currentMinutes-data[0].InsertedTime)>7 && data[0].Reminder == 2){
+                            console.log("send reminder for reminder"+data[0].Reminder+1);
+                            SendReminder(tokenId,data[0].userId);
+                            dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
+                            var todayDate = BusinessLayer.getTodayDate();
+                            var query = {userId: data[0].userId, date: new Date(todayDate)};
+                            BusinessLayer.updateTeamMemberData(dataToUpdate,query);
+                        } else if ((currentMinutes-data[0].InsertedTime)>12 && data[0].Reminder == 3){
+                            console.log("You are clearly too busy. We will remind you at the next scheduled time.");
+                            dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
+                            var todayDate = BusinessLayer.getTodayDate();
+                            var query = {userId: data[0].userId, date: new Date(todayDate)};
+                            BusinessLayer.updateTeamMemberData(dataToUpdate,query);
+                        }
+                    }
+                    
+                    
+                    
+                
+            });
+        }
+    });
+
+   
 
 }
+
 
 // for every 24 hours (for now just set 10 minutes for testing)
  var data = [{name: "Phuc", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5GQEJP3"},
 {name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
 //BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
 handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
-console.log(BusinessLayer.getDailyReminderTimer());
-// for every 2 minutes (for now just set 1 minutes for testing)
-//setInterval(remindTeamMembers,10000);
-//remindTeamMembersDaily();
 
-userID = 'UC5GQEJP3';
-SendReminder(tokenId, userID);
+// for every 2 minutes check if somebody ignore reminder and do follow up
+handleRemindTeamMember = setInterval(remindTeamMembers,20000);
+remindTeamMembersDaily();
+
+// userID = 'UC5GQEJP3';
+// SendReminder(tokenId, userID);
 
 
 
@@ -782,7 +828,22 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var dt = new Date();
         dt.setDate(dt.getDate());
         var data1 = {name: userID, team: "DevTeam08", date: dt, rating: happinesslevel1};
-        BusinessLayer.insertTeamMemberData(data1);
+        var todayDate = BusinessLayer.getTodayDate();
+        BusinessLayer.getTeamMemberHappinessByDateId(userID,todayDate,function(result){
+            var delay = 0;
+            if(result.length === 0) {
+                BusinessLayer.insertTeamMemberData(data1);
+                console.log("Data inserted");
+            } else {
+                data = {$set: {rating: happinesslevel1}};
+                var query = {userId: userID, date: new Date(todayDate)};
+                BusinessLayer.updateTeamMemberData(data,query);
+                console.log("Data updated");
+    
+            }
+    
+        });
+        
         console.log('Inserted Individual Happiness Level Data to MongoDB');
 
         //-----------Insert Database MongoDB for Teamwork here-------------//
