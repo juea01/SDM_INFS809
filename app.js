@@ -314,7 +314,7 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
         //response_url = responseURL;
         //const body = JSON.parse(req.body.payload);
         //tsMessage = body.ts;
-         console.log(response.body);
+        // console.log(response.body);
         //tsMessage = JSON.parse(body).ts;
         //console.log("Ben trong ham request " + tsMessage);
         if (error){
@@ -394,6 +394,82 @@ function SendDiaglogReport(responseURL,attachment,trigger_id){
     
 }
 
+
+//15 October 2018: Henry added Diaglog fucntion for Eventloger
+function SendDiaglogEventLogger(responseURL,trigger_id){
+    console.log('I am in logger  and trigger is '+trigger_id  + 'and token id ís' + tokenId)
+    submmitType ='EventLogger';
+    var dt1, dt2 = new Date();
+    dt2.setDate(dt2.getDate() +1); //System date on server delay 1 day ?
+
+
+    var postOptions =
+    {
+        uri: 'https://slack.com/api/dialog.open',
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        qs: {
+            "token": tokenId,//integration.get('slack_token'),
+            "trigger_id": trigger_id,
+            //"attachments": JSON.stringify(attachment)
+            "dialog": JSON.stringify({
+                title: 'SCHEDULING CONFIG !',
+                callback_id: 'EventLogger-ticket',
+                submit_label: 'Submit',
+                elements: [
+                    {
+                        label: 'Subject of meeting',
+                        type: 'text',
+                        name: 'Subject',
+                        //value: dateformat(dt2, 'hh'),
+                        //hint: 'End date of the report yyyy-mm-dd',
+                        //optional: true,
+                      },
+                    {
+                        label: 'Schedule of meeting',
+                        type: 'text',
+                        name: 'MeetingDate',
+                        value: dateformat(dt1, 'yyyy-mm-dd'),//filecsv
+                        //hint: 'Start date of the report yyyy-mm-dd',
+                      },
+                      {
+                        label: 'Hour of meeting',
+                        type: 'text',
+                        name: 'HourMeeting',
+                        value: dateformat(dt2, 'hh'),
+                        //hint: 'End date of the report yyyy-mm-dd',
+                        //optional: true,
+                      },
+                      {
+                        label: 'Details of meeting',
+                        type: 'textarea',
+                        name: 'DetailsMeeting',
+                        //value: dateformat(dt2, 'hh'),
+                        //hint: 'End date of the report yyyy-mm-dd',
+                        //optional: true,
+                      }
+
+                ],
+              }),
+           }
+
+    }
+
+    request(postOptions, (error,response,body)=>{
+        //console.log("Ben trong ham request " + tsMessage);
+        //tsMessage = JSON.parse(body).ts;
+        console.log('Noi dung tra ve sau khi goi dialog cua Logger la ' )
+        console.log(body);
+        if (error){
+            //handle errors as you see fit
+        }
+
+        
+    })
+    
+}
 
 function sendToSlack(attachment, message) {
     request.post({
@@ -765,8 +841,8 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     //Case user's action come from Slack Diglog submit button
     if (actionJSONPayload.type =="dialog_submission")
     {
-       console.log(submmitType);
-       console.log(actionJSONPayload.callback_id);
+       //console.log(submmitType);
+      // console.log(actionJSONPayload.callback_id);
 
        //Case user click Submit button on Survey dialog
        if (submmitType == "InputData")
@@ -1062,6 +1138,27 @@ app.post('/report', urlencodedParser, function(req, res) {
 
 
 
+// Route the Slack command /rbot in the config slack app: Process with report part
+app.post('/logger', urlencodedParser, function(req, res) {
+    //res.send('Welcome to Monitor slack bot of Group 08 !');
+    const { text, trigger_id } = req.body;
+    res.status(200).end(); // best practice to respond with empty 200 status code
+    var reqBody = req.body;
+    responseURL = reqBody.response_url;
+    //console.log("Triger_id");
+    userID = req.body.user_id;
+    console.log(req.body);
+    //console.log(trigger_id);
+    //console.log(body);
+    //Function to show the diaglog for input data
+    //   const { text, trigger_id } = req.body;
+    console.log("You are in /logger , here trigger_id " + trigger_id);
+    //console.log(responseURL);
+    SendDiaglogEventLogger(responseURL, trigger_id);
+    //SendReminder(tokenId)
+    
+
+});
 
 
 // Helper functions
