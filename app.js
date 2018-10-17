@@ -685,11 +685,12 @@ function remindTeamMembers() {
                             var query = {userId: data[0].userId, date: new Date(todayDate)};
                             BusinessLayer.updateTeamMemberData(dataToUpdate,query);
                         } else if ((currentMinutes-data[0].InsertedTime)>12 && data[0].Reminder == 3){
-                            console.log("You are clearly too busy. We will remind you at the next scheduled time.");
+                            var message = 'You are clearly too busy. We will remind you at the next scheduled time.';
                             dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
                             var todayDate = BusinessLayer.getTodayDate();
                             var query = {userId: data[0].userId, date: new Date(todayDate)};
                             BusinessLayer.updateTeamMemberData(dataToUpdate,query);
+                            SendMessage(tokenId, data[0].userId, message);
                         }
                     }
                     
