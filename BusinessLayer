@@ -6,9 +6,9 @@ var DbLayer = require("./DbLayer");
 
 //var url = "mongodb://localhost:27017/surveydb";
 //var url = "mongodb://a01194c5e5fa:27017/surveydb";
-var url = "mongodb://example:example@ds053312.mongolab.com:53312/surveydb";
-var dbName = "surveydb";
-
+var url = "mongodb://example:example@ds053312.mongolab.com:53312/todolist";
+//var dbName = "surveydb";
+var dbName = "todolist";
 var collectionName = "team_member_happiness";
 var collectionNameTeam = "team_happiness";
 var collectionNameTeamMember = "team_member";
