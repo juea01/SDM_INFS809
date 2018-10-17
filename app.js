@@ -415,12 +415,12 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
             "trigger_id": trigger_id,
             //"attachments": JSON.stringify(attachment)
             "dialog": JSON.stringify({
-                title: 'MEETING LOGS!',
+                title: 'MEETING LOGS',
                 callback_id: 'EventLogger-ticket',
                 submit_label: 'Submit',
                 elements: [
                     {
-                        label: 'Subject of meeting',
+                        label: 'Meeting Subject',
                         type: 'text',
                         name: 'Subject',
                         //value: dateformat(dt2, 'hh'),
@@ -428,19 +428,19 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
                         //optional: true, typeMeeting
                       },
                       {
-                        label: 'Type of meeting',
+                        label: 'Meeting Type',
                         type: 'text',
                         name: 'TypeMeeting',
                       },
                     {
-                        label: 'Schedule of meeting',
+                        label: 'Meeting Date',
                         type: 'text',
                         name: 'MeetingDate',
                         value: dateformat(dt1, 'yyyy-mm-dd'),//filecsv
                         //hint: 'Start date of the report yyyy-mm-dd',
                       },
                       {
-                        label: 'Hour of meeting',
+                        label: 'Meeting Duration (min)',
                         type: 'text',
                         name: 'HourMeeting',
                         value: dateformat(dt2, 'hh'),
@@ -448,7 +448,7 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
                         //optional: true,
                       },
                       {
-                        label: 'Details of meeting',
+                        label: 'Meeting Details',
                         type: 'textarea',
                         name: 'DetailsMeeting',
                         //value: dateformat(dt2, 'hh'),
@@ -644,7 +644,7 @@ var handle;
 function remindTeamMembersDaily(){
      BusinessLayer.getTeamMembers(function(result){
       
-        console.log("getData"+result.length);
+        //console.log("getData"+result.length);
         for( i = 0; i< result.length;i++){
             SendReminder(tokenId,result[i].userId);
             var todayDate = BusinessLayer.getTodayDate();
@@ -654,7 +654,7 @@ function remindTeamMembersDaily(){
     });
     clearInterval(handle);
     handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
-    console.log(BusinessLayer.getDailyReminderTimer());
+    //console.log(BusinessLayer.getDailyReminderTimer());
 }
 
 
@@ -669,22 +669,22 @@ function remindTeamMembers() {
         for( i = 0; i< result.length;i++){
             BusinessLayer.getTeamMemberHappinessByDateId(result[i].userId,todayDate,function(data){
         
-                console.log(data);
+               // console.log(data);
                     //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
                     //from first reminder then remind again
                     if(!data){
                     if (data[0].Delay == 0 && data[0].Reminder <= 3 && data[0].rating == 'NA'){
                         var currentMinutes = BusinessLayer.getCurrentTimeInMinutes();
-                        console.log("current minutes"+currentMinutes);
+                        //console.log("current minutes"+currentMinutes);
                         if ((currentMinutes-data[0].InsertedTime)>2 && data[0].Reminder == 1){
-                            console.log("send reminder for reminder"+data[0].Reminder+1);
+                            //console.log("send reminder for reminder"+data[0].Reminder+1);
                             SendReminder(tokenId,data[0].userId);
                             dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
                             var todayDate = BusinessLayer.getTodayDate();
                             var query = {userId: data[0].userId, date: new Date(todayDate)};
                             BusinessLayer.updateTeamMemberData(dataToUpdate,query);
                         } else if ((currentMinutes-data[0].InsertedTime)>7 && data[0].Reminder == 2){
-                            console.log("send reminder for reminder"+data[0].Reminder+1);
+                            //console.log("send reminder for reminder"+data[0].Reminder+1);
                             SendReminder(tokenId,data[0].userId);
                             dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
                             var todayDate = BusinessLayer.getTodayDate();
@@ -819,7 +819,7 @@ app.post('/mbot', urlencodedParser, function(req, res) {
             "text": "*SCHEDULED TIME!*\n",
             "attachments": [
                 {
-                    "text": "It is now to enter your happiness information",
+                    "text": "It's now time to enter your happiness information again",
                     "fallback": "You are unable to choose this option",
                     "callback_id": "wopr_survey",
                     "color": "#3AA3E3",
@@ -1004,20 +1004,14 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var hourMeeting = actionJSONPayload.submission.HourMeeting;
         var detailsMeeting = actionJSONPayload.submission.DetailsMeeting;
         var typeMeeting = actionJSONPayload.submission.TypeMeeting;
-        filecsv = "./" + dateformat(new Date(), 'ddhhmmss') + ".csv"//filecsv
+
         console.log('Gia tri da nhap: ' + subject + meetingDate + hourMeeting + detailsMeeting);
         //UploadFile2Slack (filename)
         var dt = new Date();
         dt.setDate(dt.getDate());
+         //Henry create for inserting event logger 
         var data = {subject: subject, team: "DevTeam08", meetingDate: meetingDate, hourMeeting: hourMeeting, detailsMeeting: detailsMeeting};
-    
-        //BusinessLayer.insertTeamMemberData(data);
-
-//var data = {subject: subject, team: "DevTeam08", meetingDate: meetingDate, hourMeeting: hourMeeting, detailsMeeting: detailsMeeting};
-        //BusinessLayer.insertTeamMemberData(data);
-       // console.log("Data inserted");
-    //Henry create for inserting event logger 
-    //static insertEventLoggerData (data) {
+        BusinessLayer.insertEventLoggerData(data);
 
         console.log("Data inserted");  
         console.log(actionJSONPayload.user.id);

@@ -11,6 +11,8 @@ var dbName = "surveydb";
 var collectionName = "team_member_happiness";
 var collectionNameTeam = "team_happiness";
 var collectionNameTeamMember = "team_member";
+//Henry define for Eventlogger table
+var collectionNameEventLogger = "EventLogger";
 //var data = {name: "Thomas Junior4", team: "DevTeam3", date: "12July2018", rating: "happy"};
 
 class BusinessLayer {
@@ -50,7 +52,7 @@ class BusinessLayer {
     static insertEventLoggerData (data) {
         console.log("Business Layer, inserting event logger data: "+collectionName);
         //insert data into db
-        DbLayer.insertData(url,dbName,collectionName,data);
+        DbLayer.insertData(url,dbName,collectionNameEventLogger,data);
     
     }
 
