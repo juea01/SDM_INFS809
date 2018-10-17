@@ -195,7 +195,7 @@ function UploadFile2Slack (filename)
         response_url = responseURL;
         //tsMessage = body.ts;
         console.log("Chuoi tra ve test upload file to slack la: ")
-        console.log(body);
+        //console.log(body);
         
         if (error){
             //handle errors as you see fit
@@ -461,7 +461,7 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
         //console.log("Ben trong ham request " + tsMessage);
         //tsMessage = JSON.parse(body).ts;
         console.log('Noi dung tra ve sau khi goi dialog cua Logger la ' )
-        console.log(body);
+        //console.log(body);
         if (error){
             //handle errors as you see fit
         }
@@ -711,7 +711,13 @@ function remindTeamMembers() {
 
 // for every 24 hours (for now just set 10 minutes for testing)
  var data = [{name: "Phuc", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5GQEJP3"},
-{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
+{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"},
+{name: "Ar1", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5EE9CAW"},
+{name: "Ar2", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5KUV666"},
+{name: "Ar3", team: "DevTeam08", RegistrationDate: "dt", userId: "UCP8NMW5V"},
+{name: "Ar4", team: "DevTeam08", RegistrationDate: "dt", userId: "UCQ3URZ4J"}
+];
+
 //BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
 handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
 
@@ -935,9 +941,10 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         console.log('Inserted Individual Happiness Level Data to MongoDB');
         //send thank mesage after Subbmit survey
         //Do not need parameter tokenId, userID anymore
-        userID = 'UC5GQEJP3';
-        console.log (tokenId);
-        console.log(userID)
+        //userID = actionJSONPayload.body.user //'UC5GQEJP3';
+        //console.log ("Check body of JSON");
+        console.log(actionJSONPayload.user.id);
+        userID = actionJSONPayload.user.id;
         var message = '*Thank you, your answers have been anonymously saved*';
         SendMessage(tokenId, userID, message);
  
@@ -1049,14 +1056,18 @@ app.post('/actions', urlencodedParser, (req, res) =>{
                 setTimeout(function(){SendRemider(tokenId,userID)},delaytime*60000);
                 console.log("Reminder created");
                 //Send message to inform to end user about delay
-                userID = 'UC5GQEJP3';
+                //userID = 'UC5GQEJP3';
+                console.log(actionJSONPayload.user.id);
+                userID = actionJSONPayload.user.id;
                 var message = 'You have postponed ' + delaytime + ' minutes ! See you !';
                 SendMessage(tokenId, userID, message);
 
             } else {
                 console.log("no more reminder for today")
                 //Send message to inform to end user about delay
-                userID = 'UC5GQEJP3'
+                //userID = 'UC5GQEJP3'
+                console.log(actionJSONPayload.user.id);
+                userID = actionJSONPayload.user.id;
                 var message = 'You do not have right to delay !';
                 SendMessage(tokenId, userID, message);
             }
@@ -1160,7 +1171,7 @@ app.post('/survey', urlencodedParser, function(req, res) {
     responseURL = reqBody.response_url;
     //console.log("Triger_id");
     userID = req.body.user_id;
-    console.log(req.body);
+    //console.log(req.body);
     //console.log(trigger_id);
     //console.log(body);
     //Function to show the diaglog for input data
@@ -1217,7 +1228,7 @@ app.post('/logger', urlencodedParser, function(req, res) {
     responseURL = reqBody.response_url;
     //console.log("Triger_id");
     userID = req.body.user_id;
-    console.log(req.body);
+    //console.log(req.body);
     //console.log(trigger_id);
     //console.log(body);
     //Function to show the diaglog for input data
