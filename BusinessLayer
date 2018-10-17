@@ -6,7 +6,7 @@ var DbLayer = require("./DbLayer");
 
 //var url = "mongodb://localhost:27017/surveydb";
 //var url = "mongodb://a01194c5e5fa:27017/surveydb";
-var url = "mongodb://heroku_9c7s57v9:5573bfbpfs2f39gd72e64elu8h@ds135003.mlab.com:35003/heroku_9c7s57v9/surveydb";
+var url = "mongodb://example:example@ds053312.mongolab.com:53312/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
