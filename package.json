@@ -6,6 +6,7 @@
 	"author": "yjx5980",
 	"dependencies": {
 		"csv-writer": "^1.2.0",
+		"dateformat": "^3.0.3",
 		"express": "^4.16.3",
 		"jsonexport": "^2.3.0",
 		"mongodb": "^3.1.4",
@@ -36,5 +37,4 @@
 	"bugs": {
 		"url": "https://github.com/juea01/SDM_INFS809/issues"
 	}
-
 }
