@@ -664,9 +664,10 @@ function remindTeamMembers() {
         for( i = 0; i< result.length;i++){
             BusinessLayer.getTeamMemberHappinessByDateId(result[i].userId,todayDate,function(data){
         
-                
+                console.log(data);
                     //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
                     //from first reminder then remind again
+                    if(!data){
                     if (data[0].Delay == 0 && data[0].Reminder <= 3 && data[0].rating == 'NA'){
                         var currentMinutes = BusinessLayer.getCurrentTimeInMinutes();
                         console.log("current minutes"+currentMinutes);
@@ -693,6 +694,8 @@ function remindTeamMembers() {
                             SendMessage(tokenId, data[0].userId, message);
                         }
                     }
+
+                }
                     
                     
                     
@@ -714,7 +717,8 @@ handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer(
 
 // for every 2 minutes check if somebody ignore reminder and do follow up
 handleRemindTeamMember = setInterval(remindTeamMembers,20000);
-remindTeamMembersDaily();
+setTimeout(remindTeamMembersDaily,30000); // this function is just to make it easy demonstrating to product owner.
+
 
 // userID = 'UC5GQEJP3';
 // SendReminder(tokenId, userID);
