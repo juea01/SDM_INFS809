@@ -5,7 +5,7 @@ var DbLayer = require("./DbLayer");
 
 
 //var url = "mongodb://localhost:27017/surveydb";
-var url = "mongodb://a01194c5e5fa:27017/surveydb";
+var url = "mongodb://033a9a8889fb:27017/surveydb";
 var dbName = "surveydb";
 
 var collectionName = "team_member_happiness";
@@ -89,7 +89,7 @@ class BusinessLayer {
     static getDailyReminderTimer() {
         var now = new Date();
         now.setHours(now.getHours()+13); // nz is 13 hours a head of UTC time
-        var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 16, 29, 0, 0) - now;
+        var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0) - now;
         if (millisTill10 < 0) {
             millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
         }
