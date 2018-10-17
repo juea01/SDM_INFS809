@@ -46,7 +46,13 @@ class BusinessLayer {
         DbLayer.insertMembers(url,dbName,collectionNameTeamMember,data);
     }
 
+    //Henry create for inserting event logger 
+    static insertEventLoggerData (data) {
+        console.log("Business Layer, inserting event logger data: "+collectionName);
+        //insert data into db
+        DbLayer.insertData(url,dbName,collectionName,data);
     
+    }
 
     static insertReminder(data) {
         console.log("Business Layer, inserting  Reminder:"+collectionName);

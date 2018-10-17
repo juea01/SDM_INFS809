@@ -1012,6 +1012,13 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         var data = {subject: subject, team: "DevTeam08", meetingDate: meetingDate, hourMeeting: hourMeeting, detailsMeeting: detailsMeeting};
     
         //BusinessLayer.insertTeamMemberData(data);
+
+//var data = {subject: subject, team: "DevTeam08", meetingDate: meetingDate, hourMeeting: hourMeeting, detailsMeeting: detailsMeeting};
+        //BusinessLayer.insertTeamMemberData(data);
+       // console.log("Data inserted");
+    //Henry create for inserting event logger 
+    //static insertEventLoggerData (data) {
+
         console.log("Data inserted");  
         console.log(actionJSONPayload.user.id);
         userID = actionJSONPayload.user.id;
