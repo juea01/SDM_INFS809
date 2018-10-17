@@ -267,8 +267,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                 submit_label: 'Submit',
                 elements: [
                     {
-                        label:'Please select one option', //PL an image to indicate how happy you are about your work.',
-                        hint: 'To indicate how happy you are about your work.',
+                        label:'Question 1', //PL an image to indicate how happy you are about your work.',
+                        hint: 'Please select an option that indicate how happy you are with your work.',
                         //placeholder: null,
                         type: 'select',
                         name: 'IndividualHappiness',
@@ -282,8 +282,8 @@ function SendDiaglogInputData(responseURL,attachment,trigger_id){
                       },
                   
                       {
-                    label:'Please select one option',  //'Please select an image to indicate how happy you think the team is about the work',
-                    hint: 'To indicate how happy you think the team is about their work.',
+                    label:'Question 2',  //'Please select an image to indicate how happy you think the team is about the work',
+                    hint: 'Please select an option that indicate how happy do you think your team are',
                     type: 'select',
                     name: 'TeamHappiness',
                     options: [
@@ -415,7 +415,7 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
             "trigger_id": trigger_id,
             //"attachments": JSON.stringify(attachment)
             "dialog": JSON.stringify({
-                title: 'SCHEDULING CONFIG !',
+                title: 'MEETING LOGS!',
                 callback_id: 'EventLogger-ticket',
                 submit_label: 'Submit',
                 elements: [
@@ -425,7 +425,12 @@ function SendDiaglogEventLogger(responseURL,trigger_id){
                         name: 'Subject',
                         //value: dateformat(dt2, 'hh'),
                         //hint: 'End date of the report yyyy-mm-dd',
-                        //optional: true,
+                        //optional: true, typeMeeting
+                      },
+                      {
+                        label: 'Type of meeting',
+                        type: 'text',
+                        name: 'TypeMeeting',
                       },
                     {
                         label: 'Schedule of meeting',
@@ -929,7 +934,8 @@ app.post('/actions', urlencodedParser, (req, res) =>{
     
             }
     
-        });
+        }
+        );
         
         console.log('Inserted Individual Happiness Level Data to MongoDB');
 
@@ -990,7 +996,31 @@ app.post('/actions', urlencodedParser, (req, res) =>{
         
           
        }
+       
+       if (submmitType =='EventLogger')
+       {
+        var subject = actionJSONPayload.submission.Subject;
+        var meetingDate = actionJSONPayload.submission.MeetingDate;
+        var hourMeeting = actionJSONPayload.submission.HourMeeting;
+        var detailsMeeting = actionJSONPayload.submission.DetailsMeeting;
+        var typeMeeting = actionJSONPayload.submission.TypeMeeting;
+        filecsv = "./" + dateformat(new Date(), 'ddhhmmss') + ".csv"//filecsv
+        console.log('Gia tri da nhap: ' + subject + meetingDate + hourMeeting + detailsMeeting);
+        //UploadFile2Slack (filename)
+        var dt = new Date();
+        dt.setDate(dt.getDate());
+        var data = {subject: subject, team: "DevTeam08", meetingDate: meetingDate, hourMeeting: hourMeeting, detailsMeeting: detailsMeeting};
+    
+        //BusinessLayer.insertTeamMemberData(data);
+        console.log("Data inserted");  
+        console.log(actionJSONPayload.user.id);
+        userID = actionJSONPayload.user.id;
+        var message = 'Your meeting records have been saved !';
+        SendMessage(tokenId, userID, message);
 
+        
+
+       };
 
     }
     else //Check button click of user 
