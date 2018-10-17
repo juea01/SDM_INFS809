@@ -708,7 +708,13 @@ function remindTeamMembers() {
 
 // for every 24 hours (for now just set 10 minutes for testing)
  var data = [{name: "Phuc", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5GQEJP3"},
-{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"}];
+{name: "Ar", team: "DevTeam08", RegistrationDate: "dt", userId: "UC8TWA753"},
+{name: "Ar1", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5EE9CAW"},
+{name: "Ar2", team: "DevTeam08", RegistrationDate: "dt", userId: "UC5KUV666"},
+{name: "Ar3", team: "DevTeam08", RegistrationDate: "dt", userId: "UCP8NMW5V"},
+{name: "Ar4", team: "DevTeam08", RegistrationDate: "dt", userId: "UCQ3URZ4J"}
+];
+
 //BusinessLayer.insertNewTeamMembers(data);  // this is just for testing purpose, admin need to do this task
 handle = setInterval(remindTeamMembersDaily,BusinessLayer.getDailyReminderTimer());
 
