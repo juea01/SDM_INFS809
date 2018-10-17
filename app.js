@@ -46,7 +46,8 @@ const PORT=8000;
 var slack = new slackObj(tokenId);
 
 // Lets start our server
-app.listen(PORT, function () {
+
+app.listen(process.env.PORT || 8000, function () {
     //Callback triggered when server is successfully listening. Hurray!
     console.log("Example app listening on port " + PORT);
 });
