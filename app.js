@@ -670,22 +670,22 @@ function remindTeamMembers() {
         for( i = 0; i< result.length;i++){
             BusinessLayer.getTeamMemberHappinessByDateId(result[i].userId,todayDate,function(data){
         
-               // console.log(data);
+                console.log(data);
                     //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
                     //from first reminder then remind again
                     if(!data){
                     if (data[0].Delay == 0 && data[0].Reminder <= 3 && data[0].rating == 'NA'){
                         var currentMinutes = BusinessLayer.getCurrentTimeInMinutes();
-                        //console.log("current minutes"+currentMinutes);
+                        console.log("current minutes"+currentMinutes);
                         if ((currentMinutes-data[0].InsertedTime)>2 && data[0].Reminder == 1){
-                            //console.log("send reminder for reminder"+data[0].Reminder+1);
+                            console.log("send reminder for reminder"+data[0].Reminder+1);
                             SendReminder(tokenId,data[0].userId);
                             dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
                             var todayDate = BusinessLayer.getTodayDate();
                             var query = {userId: data[0].userId, date: new Date(todayDate)};
                             BusinessLayer.updateTeamMemberData(dataToUpdate,query);
                         } else if ((currentMinutes-data[0].InsertedTime)>7 && data[0].Reminder == 2){
-                            //console.log("send reminder for reminder"+data[0].Reminder+1);
+                            console.log("send reminder for reminder"+data[0].Reminder+1);
                             SendReminder(tokenId,data[0].userId);
                             dataToUpdate = {$set: {Reminder: data[0].Reminder+1}};
                             var todayDate = BusinessLayer.getTodayDate();
