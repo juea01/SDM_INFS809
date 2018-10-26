@@ -626,7 +626,7 @@ function SendReminder(tokenId, userID){
     }
 
     request(postOptions, (error,response,body)=>{
-        //console.log("Ben trong ham request " + response);
+        console.log("Ben trong ham request " + response);
         //tsMessage = JSON.parse(body).ts;
         console.log(body);
         if (error){
@@ -669,7 +669,7 @@ function remindTeamMembers() {
         
         for( i = 0; i< result.length;i++){
             BusinessLayer.getTeamMemberHappinessByDateId(result[i].userId,todayDate,function(data){
-        
+                
                 console.log(data);
                     //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
                     //from first reminder then remind again
