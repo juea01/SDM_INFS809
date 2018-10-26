@@ -673,7 +673,7 @@ function remindTeamMembers() {
                 console.log(data);
                     //if reminder is less than 3 and user hasn't clicked any delay buttons and already more than two minutes
                     //from first reminder then remind again
-                    if(data == null || data == ""){
+                    if(data !== null || data !== ""){
                     if (data[0].Delay == 0 && data[0].Reminder <= 3 && data[0].rating == 'NA'){
                         var currentMinutes = BusinessLayer.getCurrentTimeInMinutes();
                         console.log("current minutes"+currentMinutes);
